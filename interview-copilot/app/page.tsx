@@ -5,6 +5,8 @@ import json from "@/app/js.json";
 import { ReportSection } from "@/components/report-section";
 
 export default function Home() {
+  const q = JSON.parse(localStorage.getItem("ic") || "{}");
+
   return (
     <main className="flex p-2 m-2 gap-8 max-h-screen	">
       <section className="flex-2">
@@ -14,7 +16,16 @@ export default function Home() {
             <div className="collapse-title text-xl font-medium">{title}</div>
             <div className="collapse-content">
               {(json as any)[title].map((question: string, index: number) => (
-                <Question id={title} question={question} key={index} />
+                <Question
+                  id={title}
+                  question={question}
+                  key={index}
+                  level={
+                    (q[title] &&
+                      (q[title][question] || q[title][question] === "0")) ||
+                    null
+                  }
+                />
               ))}
             </div>
           </div>

@@ -3,13 +3,13 @@ import { useState } from "react";
 export default function RangeInput({
   id,
   question,
-  disabled = true,
+  level,
 }: {
   id: string;
   question: string;
-  disabled: boolean;
+  level?: string;
 }) {
-  const [range, setRange] = useState(0);
+  const [range, setRange] = useState<string>(level || "0");
   const updateRange = (e: any) => {
     setRange(e.target.value);
 
@@ -32,13 +32,13 @@ export default function RangeInput({
   return (
     <>
       <input
-        disabled={disabled}
+        disabled={!(range || level)}
         type="range"
         min={0}
-        max="100"
-        value={disabled ? 0 : range}
+        max={4}
+        value={range || level}
         className="range"
-        step="25"
+        step={1}
         onChange={updateRange}
       />
       <div className="flex justify-between text-xs px-2">
