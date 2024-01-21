@@ -1,0 +1,30 @@
+{
+  "JavaScript": [
+    "Arrow Function",
+    "Closure Function",
+    "Generator Function",
+    "Generic Function",
+    "Pure Function",
+    "Object Creation",
+    "Object.assign vs Object.create",
+    "Promises (states)",
+    "Promise Functions(all, any, race)",
+    "Promise and AsyncAwait",
+    "Callbacks",
+    "Prototype Chaining",
+    "Call, bind and apply",
+    "Array Functions (find, filter, map, etc..)",
+    "OOPS (Pillars)"
+  ],
+  "TypeScript": [
+    "Basics",
+    "Pros and Cons",
+    "Configure TypeScript & tsconfig.json",
+    "Basic Code Example",
+    "Types and Interfaces",
+    "Utility Types (partial, required, readonly, pick, omit, etc..)",
+    "Type Guard",
+    "Abstract Classes",
+    "Decorators and Attributes"
+  ]
+}
