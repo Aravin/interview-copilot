@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const Navbar = () => (
   <div className="navbar bg-primary">
     <div className="flex-1">
@@ -6,10 +8,10 @@ export const Navbar = () => (
     <div className="flex-none">
       <ul className="menu menu-horizontal px-1">
         <li>
-          <a>New Feedback</a>
+          <Link href="/?reset=1">New Feedback</Link>
         </li>
         <li>
-          <a>Generate Summary</a>
+          <Link href="/?summary=1">Generate Summary</Link>
         </li>
       </ul>
     </div>

@@ -35,13 +35,14 @@ export default function RangeInput({
         disabled={!(range || level)}
         type="range"
         min={0}
-        max={4}
+        max={5}
         value={range || level}
         className="range"
         step={1}
         onChange={updateRange}
       />
       <div className="flex justify-between text-xs px-2">
+        <span>not rated</span>
         <span>no</span>
         <span>novice</span>
         <span>intermediate</span>

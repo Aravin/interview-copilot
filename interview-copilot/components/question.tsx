@@ -10,8 +10,8 @@ export default function Question({
   question: string;
   level: string;
 }) {
-  console.log({ question, level });
   const [asked, setAsked] = useState(level ? true : false);
+
   const updatedAsked = (e: any) => {
     setAsked(!asked);
     console.log("asked statue ", asked);
