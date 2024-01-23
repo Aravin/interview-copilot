@@ -1,40 +1,44 @@
 "use client";
 
-import Question from "@/components/question";
-import json from "@/app/js.json";
-import { ReportSection } from "@/components/report-section";
+import Link from "next/link";
+import { NewInterviewModal } from "@/components/new-interview-modal";
 
 export default function Home() {
   const q = JSON.parse(localStorage.getItem("ic") || "{}");
 
   return (
-    <main className="flex p-2 m-2 gap-8 max-h-screen	">
-      <section className="flex-2">
-        {Object.keys(json).map((title: string, index: number) => (
-          <div className="collapse collapse-plus bg-base-200 m-1" key={index}>
-            <input type="checkbox" />
-            <div className="collapse-title text-xl font-medium">{title}</div>
-            <div className="collapse-content">
-              {(json as any)[title].map((question: string, index: number) => (
-                <Question
-                  id={title}
-                  question={question}
-                  key={index}
-                  level={
-                    (q[title] &&
-                      (q[title][question] || q[title][question] === "0")) ||
-                    null
-                  }
-                />
-              ))}
-            </div>
+    <main className="flex p-2 m-2 gap-8 w-full">
+      <div className="card w-96 bg-base-100 shadow-xl">
+        <div className="card-body">
+          <h2 className="card-title">Previous interview</h2>
+          <p>If a dog chews shoes whose shoes does he choose?</p>
+          <div className="card-actions justify-end">
+            <Link href={"/interview"} className="btn btn-primary">
+              Continue
+            </Link>
           </div>
-        ))}
-      </section>
+        </div>
+      </div>
 
-      <section className="flex-auto">
-        <ReportSection />
-      </section>
+      <div className="card w-96 bg-base-100 shadow-xl">
+        <div className="card-body">
+          <h2 className="card-title">New Interview</h2>
+          <p>If a dog chews shoes whose shoes does he choose?</p>
+          <div className="card-actions justify-end">
+            <NewInterviewModal />
+          </div>
+        </div>
+      </div>
+
+      <div className="card w-96 bg-base-100 shadow-xl">
+        <div className="card-body">
+          <h2 className="card-title">Feedback History</h2>
+          <p>If a dog chews shoes whose shoes does he choose?</p>
+          <div className="card-actions justify-end">
+            <button className="btn btn-primary">History</button>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
