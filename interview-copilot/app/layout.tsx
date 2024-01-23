@@ -22,7 +22,13 @@ export default function RootLayout({
           {" "}
           <Navbar />
         </nav>
-        <main>{children}</main>
+        <main className="min-h-screen">{children}</main>
+
+        <footer className="footer footer-center p-4 bg-neutral text-neutral-content">
+          <aside>
+            <p>Copyright © 2024 - Aravind A</p>
+          </aside>
+        </footer>
       </body>
     </html>
   );
