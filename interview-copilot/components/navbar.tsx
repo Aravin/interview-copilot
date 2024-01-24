@@ -9,12 +9,7 @@ export const Navbar = () => (
     </div>
     <div className="flex-none">
       <ul className="menu menu-horizontal px-1">
-        <li>
-          <Link href="/?reset=1">New Feedback</Link>
-        </li>
-        <li>
-          <Link href="/?summary=1">Generate Summary</Link>
-        </li>
+        <li>{/* <Link href="/?reset=1">New Feedback</Link> */}</li>
       </ul>
     </div>
   </div>

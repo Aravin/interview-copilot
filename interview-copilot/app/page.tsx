@@ -11,7 +11,7 @@ export default function Home() {
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">Previous interview</h2>
-          <p>If a dog chews shoes whose shoes does he choose?</p>
+          <p>Continue with your previous interview?</p>
           <div className="card-actions justify-end">
             <Link href={"/interview"} className="btn btn-primary">
               Continue
@@ -23,7 +23,7 @@ export default function Home() {
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">New Interview</h2>
-          <p>If a dog chews shoes whose shoes does he choose?</p>
+          <p>Start with the new interview?</p>
           <div className="card-actions justify-end">
             <NewInterviewModal />
           </div>
@@ -33,7 +33,7 @@ export default function Home() {
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">Feedback History</h2>
-          <p>If a dog chews shoes whose shoes does he choose?</p>
+          <p>Check the history of your previous feedback?</p>
           <div className="card-actions justify-end">
             <button className="btn btn-primary">History</button>
           </div>

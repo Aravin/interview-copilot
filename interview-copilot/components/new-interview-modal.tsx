@@ -1,3 +1,5 @@
+import { uid } from "uid";
+
 export const NewInterviewModal = () => (
   <>
     {/* Open the modal using document.getElementById('ID').showModal() method */}
@@ -11,17 +13,18 @@ export const NewInterviewModal = () => (
     </button>
     <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
       <div className="modal-box">
-        <h3 className="font-bold text-lg">Give Unique Name for Interview!</h3>
+        <h3 className="font-bold text-lg">Interview ID</h3>
         <br />
         <input
           type="text"
           placeholder="Any name"
           className="input w-full max-w-xs"
+          value={uid()}
         />
         <div className="modal-action">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-secondary">Start Now</button>
+            <button className="btn btn-secondary">Continue</button>
           </form>
         </div>
       </div>
