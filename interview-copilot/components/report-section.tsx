@@ -1,14 +1,18 @@
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export const ReportSection = () => {
-  const [q, setQ] = useState(JSON.parse(localStorage.getItem("ic") || "{}"));
+  const interviewId = useSearchParams().get("id");
+  const [q, setQ] = useState(
+    JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}")
+  );
 
   useEffect(() => {
     window.addEventListener("feedback.updated", updateFeedback, false);
   }, []);
 
   const updateFeedback = () =>
-    setQ(JSON.parse(localStorage.getItem("ic") || "{}"));
+    setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
 
   return (
     <div>

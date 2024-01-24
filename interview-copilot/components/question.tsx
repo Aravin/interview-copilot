@@ -1,5 +1,6 @@
 import { useState } from "react";
 import RangeInput from "./range-input";
+import { useSearchParams } from "next/navigation";
 
 export default function Question({
   id,
@@ -10,12 +11,13 @@ export default function Question({
   question: string;
   level: string;
 }) {
+  const interviewId = useSearchParams().get("id");
   const [asked, setAsked] = useState(level ? true : false);
 
   const updatedAsked = (e: any) => {
     setAsked(!asked);
     console.log("asked statue ", asked);
-    let q = JSON.parse(localStorage.getItem("ic") || "{}");
+    let q = JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}");
     console.log(q);
     if (!q[id]) {
       q[id] = {};
@@ -25,7 +27,7 @@ export default function Question({
     }
     q[id][question] = undefined;
 
-    localStorage.setItem("ic", JSON.stringify(q));
+    localStorage.setItem(`icf-${interviewId}`, JSON.stringify(q));
     window.dispatchEvent(
       new Event("feedback.updated", { bubbles: false, cancelable: false })
     );

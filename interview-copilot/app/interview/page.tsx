@@ -4,12 +4,16 @@ import Question from "@/components/question";
 import json from "@/app/js.json";
 import { ReportSection } from "@/components/report-section";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function Home() {
-  const [q, setQ] = useState(JSON.parse(localStorage.getItem("ic") || "{}"));
+  const interviewId = useSearchParams().get("id");
+  const [q, setQ] = useState(
+    JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}")
+  );
 
   const updateFeedback = () =>
-    setQ(JSON.parse(localStorage.getItem("ic") || "{}"));
+    setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
 
   useEffect(() => {
     window.addEventListener("feedback.updated", updateFeedback, false);
