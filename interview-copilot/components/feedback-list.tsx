@@ -1,15 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const FeedbackList = () => {
-  let feedbacks = [];
+  const router = useRouter();
+  const feedbacks: string[] = [];
 
   for (var key in localStorage) {
     if (key.includes("icf-")) {
       feedbacks.push(key.replace("icf-", ""));
     }
   }
+
+  const deleteFeedback = (id: string) => {
+    localStorage.removeItem(`icf-${id}`);
+    const i = feedbacks.findIndex((value) => value === id);
+    feedbacks.splice(i, 1);
+    router.refresh();
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -27,12 +36,13 @@ export const FeedbackList = () => {
               <th>1</th>
               <td>{value}</td>
               <td>
-                <Link
-                  className="link"
-                  href={`/interview?id=${value.replace("icf-", "")}`}
-                >
-                  Access Feedback
+                <Link className="link" href={`/interview?id=${value}`}>
+                  Access
                 </Link>
+                |
+                <button className="link" onClick={() => deleteFeedback(value)}>
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
