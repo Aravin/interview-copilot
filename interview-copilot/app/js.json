@@ -3,7 +3,6 @@
     "Arrow Function",
     "Closure Function",
     "Generator Function",
-    "Generic Function",
     "Pure Function",
     "Object Creation",
     "Object.assign vs Object.create",
@@ -14,6 +13,10 @@
     "Prototype Chaining",
     "Call, bind and apply",
     "Array Functions (find, filter, map, etc..)",
+    "for..of vs  for..in",
+    "Map vs WeakMap",
+    "Symbols",
+    "ES6 features",
     "OOPS (Pillars)"
   ],
   "TypeScript": [
@@ -25,6 +28,120 @@
     "Utility Types (partial, required, readonly, pick, omit, etc..)",
     "Type Guard",
     "Abstract Classes",
-    "Decorators and Attributes"
+    "Decorators and Attributes",
+    "Generic Function"
+  ],
+  "Node.js": [
+    "Event-loop",
+    "Phases of event-loop",
+    "Micro & Macro task queue",
+    "process.nextTick()",
+    "Cluster Module",
+    "Worker-thread Module",
+    "Buffers & Streams",
+    "Event Emitter",
+    "Node.js APIs (file, crypto, OS etc)",
+    "Error handling",
+    "Package managers (npm, yarn etc)",
+    "Package.json vs Package-lock.json",
+    "dependency vs devDependency"
+  ],
+  "Node.js Framework": [
+    "Middlewares",
+    "Error Handling",
+    "Routing",
+    "MVC Architecture",
+    "Best Practices",
+    "Optimizations"
+  ],
+  "Node.js Service (Communication)": [
+    "RESTFul Service",
+    "HTTP Methods",
+    "HTTP Status Codes",
+    "HTTP Versions",
+    "graphQL",
+    "REST vs graphQL",
+    "gRPC",
+    "Websocket",
+    "Pooling",
+    "Messaging Services (Bus)",
+    "MicroServices"
+  ],
+  "React.js": [
+    "JSX",
+    "Virtual DOM",
+    "Diffing & Reconciliation",
+    "Hooks",
+    "Context API",
+    "Prop Drilling",
+    "State Management (Redux)",
+    "Error Boundaries",
+    "Fragments",
+    "HOCs",
+    "Refs (createRef, forwardRef)",
+    "Controlled & uncontrolled components",
+    "Diff ways to style",
+    "Lazy and Suspense",
+    "Performance Optimization"
+  ],
+  "Software Quality": [
+    "Unit Test",
+    "Test Suite & Assertion",
+    "Spy and Mocks",
+    "Setup & Teardown functions",
+    "Testing Pyramid",
+    "AAA method",
+    "Integration Testing",
+    "E2E Testing",
+    "Code Coverage Tool",
+    "Static/Dynamic Code Analysis Tool",
+    "Lint & Prettier",
+    "Git Hooks"
+  ],
+  "Software Security": [
+    "OWASP top 10",
+    "CORS",
+    "XSS",
+    "CSRF",
+    "CSP Headers",
+    "DDoS",
+    "Injection",
+    "AuthN, AuthZ"
+  ],
+  "Design Principles": [
+    "DRY",
+    "KISS",
+    "YAGNI",
+    "SOLID",
+    "High Cohesion & Low Coupling"
+  ],
+  "Design Patterns": [
+    "Basics of design principles",
+    "Categories",
+    "Able to explain couple of design principles",
+    "Coding examples"
+  ],
+  "Cloud Platform": [
+    "Basics of Cloud Platform",
+    "Serverless Architecture",
+    "Other cloud services"
+  ],
+  "HTML": [
+    "HTML5 Tags",
+    "Meta tags",
+    "doctype",
+    "viewport",
+    "Voided tag",
+    "img vs figure tag",
+    "a11y",
+    "Responsive web design",
+    "id vs class",
+    "iframe",
+    "ways of display (inline, block)",
+    "Events"
+  ],
+  "Coding": [
+    "Solve",
+    "Write Code"
   ]
 }
