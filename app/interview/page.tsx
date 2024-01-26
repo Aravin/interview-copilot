@@ -8,12 +8,14 @@ import { useSearchParams } from "next/navigation";
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
-
   const interviewId = useSearchParams().get("id");
-  const [q, setQ] = useState(
-    isClient ?
-      JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}") : {}
-  );
+  const [q, setQ] = useState<any>({});
+
+  useEffect(() => {
+    setIsClient(true);
+    setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
+    window.addEventListener("feedback.updated", updateFeedback, false);
+  }, []);
 
   const updateFeedback = () => {
     if (isClient) {
@@ -21,14 +23,9 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    setIsClient(true);
-    window.addEventListener("feedback.updated", updateFeedback, false);
-  }, []);
-
   return (
     <main className="flex p-2 m-2 gap-8 w-full">
-      <section className="">
+      { isClient && <section className="">
         {Object.keys(json).map((title: string, index: number) => (
           <div className="collapse collapse-plus bg-base-200 m-1" key={index}>
             <input type="checkbox" />
@@ -50,7 +47,7 @@ export default function Home() {
           </div>
         ))}
       </section>
-
+}
       <section className="flex-auto">
         <ReportSection />
       </section>

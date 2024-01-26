@@ -21,18 +21,20 @@ export default function Question({
 
   const updatedAsked = (e: any) => {
     setAsked(!asked);
-    let q = JSON.parse(isClient ? localStorage.getItem(`icf-${interviewId}`) || "{}" : '{}');
 
-    if (!q[id]) {
-      q[id] = {};
-    }
-    if (!q[id][question]) {
-      q[id][question] = null;
-    }
-    q[id][question] = undefined;
+    if (isClient) {
+      let q = JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}");
 
-    isClient &&
+      if (!q[id]) {
+        q[id] = {};
+      }
+      if (!q[id][question]) {
+        q[id][question] = null;
+      }
+      q[id][question] = undefined;
+
       localStorage.setItem(`icf-${interviewId}`, JSON.stringify(q));
+    }
 
     window.dispatchEvent(
       new Event("feedback.updated", { bubbles: false, cancelable: false })

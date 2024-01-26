@@ -4,19 +4,16 @@ import { useEffect, useState } from "react";
 export const ReportSection = () => {
   const [isClient, setIsClient] = useState(false);
   const interviewId = useSearchParams().get("id");
+  const [q, setQ] = useState<any>({});
 
   useEffect(() => {
     setIsClient(true);
+    setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
     window.addEventListener("feedback.updated", updateFeedback, false);
-  }, [])
-
-  const [q, setQ] = useState(
-    JSON.parse(isClient ? localStorage.getItem(`icf-${interviewId}`) || "{}" : '{}')
-  );
+  }, []);
 
   const updateFeedback = () => {
-    isClient &&
-      setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
+    setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
   }
 
   return (

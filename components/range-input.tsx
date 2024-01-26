@@ -21,18 +21,19 @@ export default function RangeInput({
   const updateRange = (e: any) => {
     setRange(e.target.value);
 
-    let q = JSON.parse(isClient ? localStorage.getItem(`icf-${interviewId}`) || "{}" : '{}');
+    if (isClient) {
+      let q = JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}");
 
-    if (!q[id]) {
-      q[id] = {};
-    }
-    if (!q[id][question]) {
-      q[id][question] = null;
-    }
-    q[id][question] = e.target.value;
+      if (!q[id]) {
+        q[id] = {};
+      }
+      if (!q[id][question]) {
+        q[id][question] = null;
+      }
+      q[id][question] = e.target.value;
 
-    isClient &&
       localStorage.setItem(`icf-${interviewId}`, JSON.stringify(q));
+    }
     window.dispatchEvent(
       new Event("feedback.updated", { bubbles: false, cancelable: false })
     );

@@ -11,7 +11,7 @@ export const FeedbackList = () => {
 
   useEffect(() => {
     setIsClient(true);
-  }, [])
+  }, []);
 
   if (isClient) {
     for (var key in localStorage) {
@@ -25,6 +25,9 @@ export const FeedbackList = () => {
     isClient && localStorage.removeItem(`icf-${id}`);
     const i = feedbacks.findIndex((value) => value === id);
     feedbacks.splice(i, 1);
+    if (feedbacks.length === 0) {
+      localStorage.removeItem('icf_latest_interview');
+    }
     router.refresh();
   };
 
