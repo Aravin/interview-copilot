@@ -7,14 +7,16 @@ export const FeedbackList = () => {
   const router = useRouter();
   const feedbacks: string[] = [];
 
-  for (var key in localStorage) {
-    if (key.includes("icf-")) {
-      feedbacks.push(key.replace("icf-", ""));
+  if (typeof window !== 'undefined') {
+    for (var key in localStorage) {
+      if (key.includes("icf-")) {
+        feedbacks.push(key.replace("icf-", ""));
+      }
     }
   }
 
   const deleteFeedback = (id: string) => {
-    localStorage.removeItem(`icf-${id}`);
+    typeof window !== 'undefined' && localStorage.removeItem(`icf-${id}`);
     const i = feedbacks.findIndex((value) => value === id);
     feedbacks.splice(i, 1);
     router.refresh();

@@ -4,19 +4,23 @@ import Link from "next/link";
 import { NewInterviewModal } from "@/components/new-interview-modal";
 
 export default function Home() {
-  const interviewId = localStorage.getItem("icf_latest_interview");
   let feedbacks = [];
+  let interviewId = null;
 
-  for (var key in localStorage) {
-    if (key.includes("icf-")) {
-      feedbacks.push(key.replace("icf-", ""));
+  if (typeof window !== 'undefined') {
+    interviewId = localStorage.getItem("icf_latest_interview");
+
+    for (var key in localStorage) {
+      if (key.includes("icf-")) {
+        feedbacks.push(key.replace("icf-", ""));
+      }
     }
   }
 
   return (
     <main className="flex p-2 m-2 gap-8 w-full">
       {interviewId && (
-        <div className="card w-96 bg-base-100 shadow-xl">
+        <div className="card w-96 bg-base-100 shadow-xl" key={"prev"}>
           <div className="card-body">
             <h2 className="card-title">Previous interview</h2>
             <p>Continue with your previous interview?</p>
@@ -32,7 +36,7 @@ export default function Home() {
         </div>
       )}
 
-      <div className="card w-96 bg-base-100 shadow-xl">
+      <div className="card w-96 bg-base-100 shadow-xl" key={"new"}>
         <div className="card-body">
           <h2 className="card-title">New Interview</h2>
           <p>Start with the new interview?</p>
@@ -43,7 +47,7 @@ export default function Home() {
       </div>
 
       {feedbacks.length !== 0 && (
-        <div className="card w-96 bg-base-100 shadow-xl">
+        <div className="card w-96 bg-base-100 shadow-xl" key={"history"}>
           <div className="card-body">
             <h2 className="card-title">Feedback History</h2>
             <p>Check the history of your previous feedback?</p>

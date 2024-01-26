@@ -9,11 +9,15 @@ import { useSearchParams } from "next/navigation";
 export default function Home() {
   const interviewId = useSearchParams().get("id");
   const [q, setQ] = useState(
-    JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}")
+    typeof window !== 'undefined' ?
+      JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}") : {}
   );
 
-  const updateFeedback = () =>
-    setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
+  const updateFeedback = () => {
+    if (typeof window !== 'undefined') {
+      setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
+    }
+  };
 
   useEffect(() => {
     window.addEventListener("feedback.updated", updateFeedback, false);

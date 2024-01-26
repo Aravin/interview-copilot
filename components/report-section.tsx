@@ -4,15 +4,17 @@ import { useEffect, useState } from "react";
 export const ReportSection = () => {
   const interviewId = useSearchParams().get("id");
   const [q, setQ] = useState(
-    JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}")
+    JSON.parse(typeof window !== 'undefined' ? localStorage.getItem(`icf-${interviewId}`) || "{}" : '{}')
   );
 
   useEffect(() => {
     window.addEventListener("feedback.updated", updateFeedback, false);
   }, []);
 
-  const updateFeedback = () =>
-    setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
+  const updateFeedback = () => {
+    typeof window !== 'undefined' &&
+      setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
+  }
 
   return (
     <div>

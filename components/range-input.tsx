@@ -15,8 +15,8 @@ export default function RangeInput({
   const updateRange = (e: any) => {
     setRange(e.target.value);
 
-    let q = JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}");
-    console.log(q);
+    let q = JSON.parse(typeof window !== 'undefined' ? localStorage.getItem(`icf-${interviewId}`) || "{}" : '{}');
+
     if (!q[id]) {
       q[id] = {};
     }
@@ -25,7 +25,8 @@ export default function RangeInput({
     }
     q[id][question] = e.target.value;
 
-    localStorage.setItem(`icf-${interviewId}`, JSON.stringify(q));
+    typeof window !== 'undefined' &&
+      localStorage.setItem(`icf-${interviewId}`, JSON.stringify(q));
     window.dispatchEvent(
       new Event("feedback.updated", { bubbles: false, cancelable: false })
     );
