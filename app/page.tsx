@@ -2,12 +2,19 @@
 
 import Link from "next/link";
 import { NewInterviewModal } from "@/components/new-interview-modal";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   let feedbacks = [];
   let interviewId = null;
 
-  if (typeof window !== 'undefined') {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, [])
+
+  if (isClient) {
     interviewId = localStorage.getItem("icf_latest_interview");
 
     for (var key in localStorage) {

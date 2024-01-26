@@ -2,17 +2,20 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export const ReportSection = () => {
+  const [isClient, setIsClient] = useState(false);
   const interviewId = useSearchParams().get("id");
-  const [q, setQ] = useState(
-    JSON.parse(typeof window !== 'undefined' ? localStorage.getItem(`icf-${interviewId}`) || "{}" : '{}')
-  );
 
   useEffect(() => {
+    setIsClient(true);
     window.addEventListener("feedback.updated", updateFeedback, false);
-  }, []);
+  }, [])
+
+  const [q, setQ] = useState(
+    JSON.parse(isClient ? localStorage.getItem(`icf-${interviewId}`) || "{}" : '{}')
+  );
 
   const updateFeedback = () => {
-    typeof window !== 'undefined' &&
+    isClient &&
       setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
   }
 

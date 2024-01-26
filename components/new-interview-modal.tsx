@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { uid } from "uid";
 
 export const NewInterviewModal = () => {
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
   const [interviewId, setInterviewId] = useState(uid());
+
+  useEffect(() => {
+    setIsClient(true);
+  }, [])
 
   const updateInterviewId = (e: any) =>
     setInterviewId(
@@ -17,7 +22,7 @@ export const NewInterviewModal = () => {
     );
 
   const onModalClick = (e: any) => {
-    localStorage.setItem("icf_latest_interview", interviewId);
+    isClient && localStorage.setItem("icf_latest_interview", interviewId);
     router.push(`/interview?id=${interviewId}`);
   };
 

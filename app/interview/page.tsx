@@ -7,19 +7,22 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 export default function Home() {
+  const [isClient, setIsClient] = useState(false);
+
   const interviewId = useSearchParams().get("id");
   const [q, setQ] = useState(
-    typeof window !== 'undefined' ?
+    isClient ?
       JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}") : {}
   );
 
   const updateFeedback = () => {
-    if (typeof window !== 'undefined') {
+    if (isClient) {
       setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
     }
   };
 
   useEffect(() => {
+    setIsClient(true);
     window.addEventListener("feedback.updated", updateFeedback, false);
   }, []);
 

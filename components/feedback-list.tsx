@@ -2,12 +2,18 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export const FeedbackList = () => {
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
   const feedbacks: string[] = [];
 
-  if (typeof window !== 'undefined') {
+  useEffect(() => {
+    setIsClient(true);
+  }, [])
+
+  if (isClient) {
     for (var key in localStorage) {
       if (key.includes("icf-")) {
         feedbacks.push(key.replace("icf-", ""));
@@ -16,7 +22,7 @@ export const FeedbackList = () => {
   }
 
   const deleteFeedback = (id: string) => {
-    typeof window !== 'undefined' && localStorage.removeItem(`icf-${id}`);
+    isClient && localStorage.removeItem(`icf-${id}`);
     const i = feedbacks.findIndex((value) => value === id);
     feedbacks.splice(i, 1);
     router.refresh();

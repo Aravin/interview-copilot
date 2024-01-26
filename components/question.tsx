@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RangeInput from "./range-input";
 import { useSearchParams } from "next/navigation";
 
@@ -11,12 +11,17 @@ export default function Question({
   question: string;
   level: string;
 }) {
+  const [isClient, setIsClient] = useState(false);
   const interviewId = useSearchParams().get("id");
   const [asked, setAsked] = useState(level ? true : false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, [])
+
   const updatedAsked = (e: any) => {
     setAsked(!asked);
-    let q = JSON.parse(typeof window !== 'undefined' ? localStorage.getItem(`icf-${interviewId}`) || "{}" : '{}');
+    let q = JSON.parse(isClient ? localStorage.getItem(`icf-${interviewId}`) || "{}" : '{}');
 
     if (!q[id]) {
       q[id] = {};
@@ -26,7 +31,7 @@ export default function Question({
     }
     q[id][question] = undefined;
 
-    typeof window !== 'undefined' &&
+    isClient &&
       localStorage.setItem(`icf-${interviewId}`, JSON.stringify(q));
 
     window.dispatchEvent(
