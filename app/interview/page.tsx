@@ -22,7 +22,7 @@ function Interview() {
   return (
     <Suspense fallback={<>questions loading...</>}>
       <main className="flex p-2 m-2 gap-8 w-full">
-        {Object.keys(q).length === 0 && <section className="">
+        {Object.keys(q).length && <section className="">
           {Object.keys(json).map((title: string, index: number) => (
             <div className="collapse collapse-plus bg-base-200 m-1" key={index}>
               <input type="checkbox" />
