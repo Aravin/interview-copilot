@@ -3,27 +3,26 @@
 import Question from "@/components/question";
 import json from "@/app/js.json";
 import { ReportSection } from "@/components/report-section";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useLayoutEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 function Interview() {
   const interviewId = useSearchParams().get("id");
-  const [q, setQ] = useState<any>({});
-
-  useEffect(() => {
-    window.addEventListener("feedback.updated", updateFeedback, false);
-    setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
-  }, []);
+  const [q, setQ] = useState<any>(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
 
   const updateFeedback = () => {
     setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
   };
 
+  useLayoutEffect(() => {
+    window.addEventListener("feedback.updated", updateFeedback, false);
+  }, [interviewId])
+
   return (
     <Suspense fallback={<>questions loading...</>}>
       <main className="flex p-2 m-2 gap-8 w-full">
-        {Object.keys(q).length && <section className="">
-          {Object.keys(json).map((title: string, index: number) => (
+        {<section className="">
+          {q && Object.keys(json).map((title: string, index: number) => (
             <div className="collapse collapse-plus bg-base-200 m-1" key={index}>
               <input type="checkbox" />
               <div className="collapse-title text-xl font-medium">{title}</div>
