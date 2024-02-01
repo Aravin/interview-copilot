@@ -8,9 +8,12 @@ export const ReportSection = () => {
 
   useEffect(() => {
     setIsClient(true);
-    setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
     window.addEventListener("feedback.updated", updateFeedback, false);
   }, []);
+
+  if (isClient) {
+    setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
+  }
 
   const updateFeedback = () => {
     setQ(JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}"));
