@@ -25,7 +25,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex p-2 m-2 gap-8 w-full">
+    <main className="flex p-2 m-2 gap-8">
       {interviewId && (
         <div className="card w-96 bg-base-100 shadow-xl" key={"prev"}>
           <div className="card-body">
