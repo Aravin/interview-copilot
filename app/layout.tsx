@@ -25,7 +25,7 @@ export default function RootLayout({
 
           <footer className="footer footer-center p-4 bg-neutral text-neutral-content sticky bottom-0">
             <aside>
-              <p>Copyright © 2024 - Aravind A</p>
+              <p>Copyright © 2024 - Aravin & Sai</p>
             </aside>
           </footer>
         </div>
