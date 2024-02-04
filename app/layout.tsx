@@ -17,18 +17,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="cupcake">
-      <body className={inter.className}>
-        <nav>
-          {" "}
-          <Navbar />
-        </nav>
-        <main className="min-h-screen">{children}</main>
+      <body className={`${inter.className} min-h-[100vh] w-[100vw]`}>
+        <Navbar />
 
-        <footer className="footer footer-center p-4 bg-neutral text-neutral-content">
-          <aside>
-            <p>Copyright © 2024 - Aravind A</p>
-          </aside>
-        </footer>
+        <div className="flex flex-col justify-between min-h-[calc(100vh-4rem)]">
+          <main className="flex-1">{children}</main>
+
+          <footer className="footer footer-center p-4 bg-neutral text-neutral-content sticky bottom-0">
+            <aside>
+              <p>Copyright © 2024 - Aravind A</p>
+            </aside>
+          </footer>
+        </div>
       </body>
     </html>
   );
