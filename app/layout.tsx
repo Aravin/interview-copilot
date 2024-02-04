@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="cupcake">
-      <body className={`${inter.className} min-h-[100vh] w-[100vw]`}>
+      <body className={`${inter.className} min-h-[100vh] max-w-[100vw]`}>
         <Navbar />
 
         <div className="flex flex-col justify-between min-h-[calc(100vh-4rem)]">
