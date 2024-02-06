@@ -21,7 +21,7 @@ function Interview() {
   return (
     <Suspense fallback={<>questions loading...</>}>
       <main className="grid grid-cols-[1.5fr_2.5fr] p-2 m-2 gap-8">
-        {<section className="">
+        {<section className="overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-9rem)] p-2">
           {q && Object.keys(json).map((title: string, index: number) => (
             <div className="collapse collapse-plus bg-base-200 m-1" key={index}>
               <input type="checkbox" />
