@@ -2,8 +2,8 @@ export const ReportSection = ({ feedback }: any) => {
 
   return (
     <div>
-      <div className="font-medium">Feedback</div>
-      <div className="bg-base-200 p-2 m-2 text-xs">
+      <div className="font-medium pl-2">Feedback</div>
+      <div className="bg-base-200 p-2 m-2 text-xs overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-12rem)]">
         {feedback && Object.keys(feedback).map((skill: string, index: number) => {
           return (
             <div key={index}>
