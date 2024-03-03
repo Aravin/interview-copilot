@@ -1,9 +1,9 @@
-export const ReportSection = ({ feedback }: any) => {
+export const FeedbackDetailsSection = ({ feedback }: any) => {
 
   return (
     <div>
       <div className="font-medium pl-2">Feedback</div>
-      <div className="bg-base-200 p-2 m-2 text-xs overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-12rem)]">
+      <div className="bg-base-200 p-2 m-2 text-xs">
         {feedback && Object.keys(feedback).map((skill: string, index: number) => {
           return (
             <div key={index}>
@@ -15,10 +15,9 @@ export const ReportSection = ({ feedback }: any) => {
               </p>
               <br />
               <div>
-                <hr />
                 {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "5") && (
                   <section id="expert">
-                    <p>Has expert knowledge in</p>
+                    <span># Has expert knowledge in</span>
                     <ul>
                       {Object.keys(feedback[skill]).map(
                         (level: string, index: number) => {
@@ -33,7 +32,7 @@ export const ReportSection = ({ feedback }: any) => {
                 )}
                 {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "4") && (
                   <section id="advanced">
-                    <p>Has advanced knowledge in</p>
+                    <span># Has advanced knowledge in</span>
                     <ul>
                       {Object.keys(feedback[skill])?.map(
                         (level: string, index: number) => {
@@ -48,7 +47,7 @@ export const ReportSection = ({ feedback }: any) => {
                 )}
                 {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "3") && (
                   <section id="intermediate">
-                    <p>Has intermediate knowledge in</p>
+                    <span># Has intermediate knowledge in</span>
                     <ul>
                       {Object.keys(feedback[skill])?.map(
                         (level: string, index: number) => {
@@ -64,7 +63,7 @@ export const ReportSection = ({ feedback }: any) => {
                 {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "2") && (
                   <section id="novice">
                     <div>
-                      <p>Has novice knowledge in</p>
+                      <span># Has novice knowledge in</span>
                       <ul>
                         {Object.keys(feedback[skill])?.map(
                           (level: string, index: number) => {
@@ -80,7 +79,7 @@ export const ReportSection = ({ feedback }: any) => {
                 )}
                 {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "1") && (
                   <section id="no">
-                    <p>Has NO knowledge in</p>
+                    <span># Has NO knowledge in</span>
                     <ul>
                       {Object.keys(feedback[skill])?.map(
                         (level: string, index: number) => {

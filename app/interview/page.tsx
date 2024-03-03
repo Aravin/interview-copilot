@@ -2,9 +2,10 @@
 
 import Question from "@/components/question";
 import json from "@/app/js.json";
-import { ReportSection } from "@/components/report-section";
+import { FeedbackDetailsSection } from "@/components/feedback-details-section";
 import { Suspense, useLayoutEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { FeedbackImprovementSection } from "@/components/feedback-improvement-section";
 
 function Interview() {
   const interviewId = useSearchParams().get("id");
@@ -20,8 +21,8 @@ function Interview() {
 
   return (
     <Suspense fallback={<>questions loading...</>}>
-      <main className="grid grid-cols-[1.5fr_2.5fr] p-2 m-2 gap-8">
-        {<section className="overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-9rem)] p-2">
+      <main className="grid grid-cols-[2fr_2fr] p-2 m-2 gap-8">
+        <section className="overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-9rem)] p-2">
           {q && Object.keys(json).map((title: string, index: number) => (
             <div className="collapse collapse-plus bg-base-200 m-1" key={index}>
               <input type="checkbox" />
@@ -43,9 +44,10 @@ function Interview() {
             </div>
           ))}
         </section>
-        }
-        <section className="flex-auto">
-          <ReportSection feedback={q} />
+
+        <section className="flex flex-col overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-12rem)]">
+          <FeedbackDetailsSection feedback={q} />
+          <FeedbackImprovementSection feedback={q} />
         </section>
       </main>
     </Suspense>
