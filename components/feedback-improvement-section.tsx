@@ -1,7 +1,22 @@
+import { useState } from "react";
+import { FeedbackAISummarySection } from "./feedback-ai-summary";
+
 export const FeedbackImprovementSection = ({ feedback }: any) => {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  }
   return (
     <div>
-      <div className="font-medium pl-2">Improvement</div>
+      {
+        isModalOpen && <FeedbackAISummarySection close={toggleModal} feedback={JSON.stringify(feedback)}  />
+      }
+      <div className="font-medium pl-2">Improvement
+        <button className="btn" onClick={() => setIsModalOpen(true)}>open modal</button>
+      </div>
+
       <div className="bg-base-200 p-2 m-2 text-xs">
         <div>
           <span>## No knowledge in following/Learn following:</span><br /><br />
@@ -18,10 +33,10 @@ export const FeedbackImprovementSection = ({ feedback }: any) => {
                   <ul>
                     {
                       Object.keys(f[1]).map((value: string, index: number) => {
-                        return <>{f[1][value] === '1' && <li>- {value}</li> } </>
+                        return <>{f[1][value] === '1' && <li>- {value}</li>} </>
                       })
                     }
-                    
+
                   </ul>
                   <br />
                 </>
@@ -43,10 +58,10 @@ export const FeedbackImprovementSection = ({ feedback }: any) => {
                   <ul>
                     {
                       Object.keys(f[1]).map((value: string, index: number) => {
-                        return <>{f[1][value] === '2' && <li>- {value}</li> } </>
+                        return <>{f[1][value] === '2' && <li>- {value}</li>} </>
                       })
                     }
-                    
+
                   </ul>
                   <br />
                 </>

@@ -57,7 +57,7 @@ function Interview() {
 export default function Page() {
   return (
     // You could have a loading skeleton as the `fallback` too
-    <Suspense>
+    <Suspense fallback={<>loading...</>}>
       <Interview />
     </Suspense>
   )
