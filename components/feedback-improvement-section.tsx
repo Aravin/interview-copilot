@@ -13,8 +13,9 @@ export const FeedbackImprovementSection = ({ feedback }: any) => {
       {
         isModalOpen && <FeedbackAISummarySection close={toggleModal} feedback={JSON.stringify(feedback)}  />
       }
-      <div className="font-medium pl-2">Improvement
-        <button className="btn" onClick={() => setIsModalOpen(true)}>open modal</button>
+      <div className="font-medium pl-2 flex flex-row justify-between">
+        <span>Improvement</span>
+        <button className="btn btn-primary btn-sm" onClick={() => setIsModalOpen(true)}>Generate Feedback</button>
       </div>
 
       <div className="bg-base-200 p-2 m-2 text-xs">
