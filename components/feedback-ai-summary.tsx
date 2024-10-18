@@ -44,7 +44,7 @@ export const FeedbackAISummarySection = (props: FeedbackAISummarySectionProps) =
 
   const generateSummary = async () => {
     setIsLoading(true);
-    const response = await fetch(`http://localhost:3000/interview/api?prompt`, {
+    const response = await fetch(`/interview/api`, {
       method: 'POST',
       body: aiPrompt
     });
