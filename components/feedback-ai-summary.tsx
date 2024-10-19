@@ -100,10 +100,12 @@ export const FeedbackAISummarySection = (props: FeedbackAISummarySectionProps) =
           </form>
           <h3 className="font-bold text-lg">Feedback Summary</h3>
           {/* <p className="py-4">{props.feedback}</p> */}
-          <button className="btn btn-secondary btn-sm" onClick={generateSummary} disabled={isLoading}>
+         <div className="flex flex-row justify-center mt-8 mb-4">
+         <button className="btn btn-secondary btn-sm" onClick={generateSummary} disabled={isLoading}>
             {isLoading ? 'Generating...' : 'Generate Summary'}
           </button>
-          {summary && <Markdown className="pt-4">{summary}</Markdown>}
+         </div>
+          {summary && <div className="pt-4">{summary}</div>}
         </div>
       </dialog>
     </>
