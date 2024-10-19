@@ -18,61 +18,67 @@ export const FeedbackImprovementSection = ({ feedback }: any) => {
           {
             isModalOpen && <FeedbackAISummarySection close={toggleModal} feedback={JSON.stringify(feedback)} />
           }
-          <div className="font-medium pl-2 flex flex-row justify-between">
-            <span>Improvement</span>
-            <button className="btn btn-primary btn-sm" onClick={() => setIsModalOpen(true)}>Generate Feedback</button>
+
+          <div className="flex justify-end">
+            <button className="btn btn-primary btn-sm" onClick={() => setIsModalOpen(true)}>
+              Generate Feedback
+            </button>
           </div>
 
           <div>
-            <span>## No knowledge in following/Learn following:</span><br /><br />
-            {
-              Object.entries(feedback).map((f: any, index: number) => {
-                let skills = [];
-                if (Object.values(f[1]).some((_) => _ === '1')) {
-                  skills.push(f[0]);
-                }
+            <strong>## No knowledge in following/Learn following:</strong>
+            <div>
+              {
+                Object.entries(feedback).map((f: any, index: number) => {
+                  let skills = [];
+                  if (Object.values(f[1]).some((_) => _ === '1')) {
+                    skills.push(f[0]);
+                  }
 
-                return skills.map((value, index) => {
-                  return <>
-                    <span># {value}</span>
-                    <ul>
-                      {
-                        Object.keys(f[1]).map((value: string, index: number) => {
-                          return <>{f[1][value] === '1' && <li>- {value}</li>} </>
-                        })
-                      }
+                  return skills.map((value, index) => {
+                    return <>
+                      <span>#### {value}</span>
+                      <ul>
+                        {
+                          Object.keys(f[1]).map((value: string, index: number) => {
+                            return <>{f[1][value] === '1' && <li>- {value}</li>} </>
+                          })
+                        }
 
-                    </ul>
-                    <br />
-                  </>
+                      </ul>
+                      <br />
+                    </>
+                  })
                 })
-              })
-            }
-            <br />
-            <span>## Needs improvement in following:</span><br /><br />
-            {
-              Object.entries(feedback).map((f: any, index: number) => {
-                let skills = [];
-                if (Object.values(f[1]).some((_) => _ === '2')) {
-                  skills.push(f[0]);
-                }
+              }
+            </div>
+            <hr className="divider" />
+            <strong>## Needs improvement in following:</strong>
+            <div>
+              {
+                Object.entries(feedback).map((f: any, index: number) => {
+                  let skills = [];
+                  if (Object.values(f[1]).some((_) => _ === '2')) {
+                    skills.push(f[0]);
+                  }
 
-                return skills.map((value, index) => {
-                  return <>
-                    <span># {value}</span>
-                    <ul>
-                      {
-                        Object.keys(f[1]).map((value: string, index: number) => {
-                          return <>{f[1][value] === '2' && <li>- {value}</li>} </>
-                        })
-                      }
+                  return skills.map((value, index) => {
+                    return <>
+                      <span>### {value}</span>
+                      <ul>
+                        {
+                          Object.keys(f[1]).map((value: string, index: number) => {
+                            return <>{f[1][value] === '2' && <li>- {value}</li>} </>
+                          })
+                        }
 
-                    </ul>
-                    <br />
-                  </>
+                      </ul>
+                      <br />
+                    </>
+                  })
                 })
-              })
-            }
+              }
+            </div>
           </div>
           <br />
         </div>
