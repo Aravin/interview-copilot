@@ -10,9 +10,6 @@ const model = genAI.getGenerativeModel(
         }
     });
 
-type Params = {
-    prompt: string
-}
 
 export async function POST(request: Request) {
     console.log('api called...');
