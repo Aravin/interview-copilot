@@ -1,9 +1,10 @@
 export const FeedbackDetailsSection = ({ feedback }: any) => {
 
   return (
-    <div>
-      <div className="font-medium pl-2">Feedback</div>
-      <div className="bg-base-200 p-2 m-2 text-xs">
+    <div className="collapse collapse-plus border-base-300 bg-base-200 border">
+      <input type="checkbox" />
+      <div className="collapse-title text-xl font-medium">Feedback</div>
+      <div className="collapse-content text-xs overflow-scroll">
         {feedback && Object.keys(feedback).map((skill: string, index: number) => {
           return (
             <div key={index}>
@@ -98,5 +99,5 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
         })}
       </div>
     </div>
-  );
+  )
 };

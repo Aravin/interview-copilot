@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import RangeInput from "./range-input";
 import { useSearchParams } from "next/navigation";
 import CopyButton from "./copy-button";
@@ -13,7 +13,6 @@ export default function Question({
   level: string;
 }) {
   const [isClient, setIsClient] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
   const interviewId = useSearchParams().get("id");
   const [asked, setAsked] = useState(level ? true : false);
 

@@ -45,9 +45,13 @@ function Interview() {
           ))}
         </section>
 
-        <section className="flex flex-col overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-12rem)]">
+        <section className="flex flex-col overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-9rem)] p-2 gap-2"> 
+          <div className="overflow-y-scroll">
           <FeedbackDetailsSection feedback={q} />
+          </div>
+          <div className="overflow-y-scroll">
           <FeedbackImprovementSection feedback={q} />
+          </div>
         </section>
       </main>
     </Suspense>
