@@ -60,6 +60,8 @@
     "RESTFul Service",
     "HTTP Methods",
     "HTTP Status Codes",
+    "Idempotency in REST",
+    "Richardson Maturity Model",
     "HTTP Versions",
     "graphQL",
     "REST vs graphQL",
