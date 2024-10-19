@@ -4,40 +4,76 @@ import Markdown from 'react-markdown';
 type FeedbackAISummarySectionProps = {
   close: () => void;
   feedback: string;
+  template: 'summary' | 'improvement';
 };
 
 export const FeedbackAISummarySection = (props: FeedbackAISummarySectionProps) => {
 
-  const aiPrompt = `
-    Input:
-    ${props.feedback}
+  let aiPrompt = ``;
 
-    Input Instruction:
-    Feedback is in JSON format,
-      where first key is primary skill example: javascript, typescript etc
-      nested key is topics such arrow function, closure etc
-      final 1,2,3,4,5 represent no, novice, intermediate, advanced, expert knowledge respectively
+  switch (props.template) {
+    case 'summary':
+      aiPrompt = aiPrompt = `
+      Input:
+      ${props.feedback}
+  
+      Input Instruction:
+      Feedback is in JSON format,
+        where first key is primary skill example: javascript, typescript etc
+        nested key is topics such arrow function, closure etc
+        final 1,2,3,4,5 represent no, novice, intermediate, advanced, expert knowledge respectively
 
-
-    Expected Output Format:
-    Markdown or Plain Text
-
-    Expected Output:
-    1. One or two paragraph of summary. Example: The candidate has novice knowledge in closure, and has intermediate knowledge in arrow function. 
-    2. Section for learning material. Include zero or one learning material related for each lacking skill. Example: https://www.w3schools.com/js/js_function_closures.asp. No need to group the learning material keep in plain unordered list like * skill - link, * skill - link etc
-
-    Example Output:
-    
-      ## Summary:
-      The candidate demonstrates a strong understanding of JavaScript fundamentals, including object creation, object manipulation, and asynchronous programming. They possess intermediate knowledge of closure functions and generator functions. However, their understanding of Object.assign vs Object.create and mutable vs immutable concepts needs further development. In TypeScript, the candidate shows competency in basic concepts and configuring TypeScript environments. They have a basic grasp of cloud platform fundamentals and a good understanding of the DRY principle.
-
-      ### Suggested Learning Resources:
-
-      * closure - https://www.w3schools.com/js/js_function_closures.asp
-      * arrow function - https://www.w3schools.com/js/js_arrow_functions.asp
-   
-
-    `;
+      Sentiment: Positive
+  
+      Expected Output Format:
+      Markdown or Plain Text
+  
+      Expected Output:
+      One or two paragraph of summary. Example: The candidate has novice knowledge in closure, and has intermediate knowledge in arrow function. 
+  
+      Example Output:
+      
+        ## Summary:
+        The candidate demonstrates a strong understanding of JavaScript fundamentals, including object creation, object manipulation, and asynchronous programming. They possess intermediate knowledge of closure functions and generator functions. However, their understanding of Object.assign vs Object.create and mutable vs immutable concepts needs further development. In TypeScript, the candidate shows competency in basic concepts and configuring TypeScript environments. They have a basic grasp of cloud platform fundamentals and a good understanding of the DRY principle.
+  
+      `;;
+      break;
+    case 'improvement':
+      aiPrompt = aiPrompt = `
+      Input:
+      ${props.feedback}
+  
+      Input Instruction:
+      Feedback is in JSON format,
+        where first key is primary skill example: javascript, typescript etc
+        nested key is topics such arrow function, closure etc
+        final 1,2,3,4,5 represent no, novice, intermediate, advanced, expert knowledge respectively
+  
+        Sentiment: Negative
+  
+      Expected Output Format:
+      Markdown or Plain Text
+  
+      Expected Output:
+      1. One or two paragraph of summary. Example: The candidate has novice knowledge in closure, and has intermediate knowledge in arrow function. 
+      2. Section for learning material. Include zero or one learning material related for each lacking skill. Example: https://www.w3schools.com/js/js_function_closures.asp. No need to group the learning material keep in plain unordered list like * skill - link, * skill - link etc
+  
+      Example Output:
+      
+        ## Summary:
+        The candidate demonstrates a strong understanding of JavaScript fundamentals, including object creation, object manipulation, and asynchronous programming. They possess intermediate knowledge of closure functions and generator functions. However, their understanding of Object.assign vs Object.create and mutable vs immutable concepts needs further development. In TypeScript, the candidate shows competency in basic concepts and configuring TypeScript environments. They have a basic grasp of cloud platform fundamentals and a good understanding of the DRY principle.
+  
+        ### Suggested Learning Resources:
+  
+        * closure - https://www.w3schools.com/js/js_function_closures.asp
+        * arrow function - https://www.w3schools.com/js/js_arrow_functions.asp
+     
+  
+      `;;
+      break;
+    default:
+      break;
+  }
 
   const [summary, setSummary] = useState('');
   const [isLoading, setIsLoading] = useState(false);

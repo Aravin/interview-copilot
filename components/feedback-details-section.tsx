@@ -1,10 +1,19 @@
+import { useState } from "react";
+import { FeedbackAISummarySection } from "./feedback-ai-summary";
+import { generateMarkdownFeedback } from "@/app/utils/functions";
+
 export const FeedbackDetailsSection = ({ feedback }: any) => {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   return (
     <div className="collapse collapse-plus border-base-300 bg-base-200 border">
       <input type="checkbox" />
       <div className="collapse-title text-xl font-medium">Feedback</div>
-      <div className="collapse-content text-xs overflow-scroll">
+      <div className="collapse-content text-xs overflow-scroll flex flex-row">
+        <div className="flex-1">
         {feedback && Object.keys(feedback).map((skill: string, index: number) => {
           return (
             <div key={index}>
@@ -87,6 +96,15 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
             </div>
           );
         })}
+        </div>
+        <div >
+        <button className="btn btn-primary btn-sm" onClick={toggleModal}>
+              Summarize
+            </button>
+            {
+            isModalOpen && <FeedbackAISummarySection close={toggleModal} feedback={generateMarkdownFeedback(feedback)}  template='summary'/>
+          }
+        </div>
       </div>
     </div>
   )
