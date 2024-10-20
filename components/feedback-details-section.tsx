@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { FeedbackAISummarySection } from "./feedback-ai-summary";
-import { generateMarkdownFeedback } from "@/app/utils/functions";
+function removeEmptyObjects(obj: { [x: string]: any; }) {
+  for (const key in obj) {
+    if (typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0) {
+      delete obj[key]; 
+    }
+  }
+  return obj;
+}
 
 export const FeedbackDetailsSection = ({ feedback }: any) => {
 
@@ -102,7 +109,7 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
               Summarize
             </button>
             {
-            isModalOpen && <FeedbackAISummarySection close={toggleModal} feedback={generateMarkdownFeedback(feedback)}  template='summary'/>
+            isModalOpen && <FeedbackAISummarySection close={toggleModal} feedback={JSON.stringify(removeEmptyObjects(feedback))} />
           }
         </div>
       </div>

@@ -1,111 +1,78 @@
 import { useState } from "react";
-import Markdown from 'react-markdown';
+import ReactMarkdown from "react-markdown";
 
 type FeedbackAISummarySectionProps = {
   close: () => void;
   feedback: string;
-  template: 'summary' | 'improvement';
 };
 
 export const FeedbackAISummarySection = (props: FeedbackAISummarySectionProps) => {
 
-  let aiPrompt = ``;
+  let aiPrompt = `You are a helpful AI assistant designed to provide insightful feedback on technical skills assessments. Based on the following data, which represents a candidate's scores in various technical areas, generate a comprehensive summary and actionable recommendations:
 
-  switch (props.template) {
-    case 'summary':
-      aiPrompt = aiPrompt = `
-      Input:
       ${props.feedback}
   
-      Input Instruction:
-      Feedback is in JSON format,
-        where first key is primary skill example: javascript, typescript etc
-        nested key is topics such arrow function, closure etc
-        final 1,2,3,4,5 represent no, novice, intermediate, advanced, expert knowledge respectively
+     Output Format:
 
-      Sentiment: Positive
+## Summary
+
+Strengths: [List the candidate's strongest areas based on high scores.]
+
+Weaknesses: [List areas where the candidate scored low and needs improvement.]
+
+## Recommendations
+
+For each identified weakness, provide the following:
+
+Area for Improvement: [Clearly state the specific skill or topic needing improvement.]
+
+Learning Resources: [Suggest relevant and accessible resources (e.g., online courses, tutorials, documentation) that directly address the weakness.]
+
+Additional Tips: [Offer any other helpful advice, such as practice exercises or projects.]
   
-      Expected Output Format:
-      Markdown or Plain Text
-  
-      Expected Output:
-      One or two paragraph of summary. Example: The candidate has novice knowledge in closure, and has intermediate knowledge in arrow function. 
-  
-      Example Output:
-      
-        ## Summary:
-        The candidate demonstrates a strong understanding of JavaScript fundamentals, including object creation, object manipulation, and asynchronous programming. They possess intermediate knowledge of closure functions and generator functions. However, their understanding of Object.assign vs Object.create and mutable vs immutable concepts needs further development. In TypeScript, the candidate shows competency in basic concepts and configuring TypeScript environments. They have a basic grasp of cloud platform fundamentals and a good understanding of the DRY principle.
-  
-      `;;
-      break;
-    case 'improvement':
-      aiPrompt = aiPrompt = `
-      Input:
-      ${props.feedback}
-  
-      Input Instruction:
-      Feedback is in JSON format,
-        where first key is primary skill example: javascript, typescript etc
-        nested key is topics such arrow function, closure etc
-        final 1,2,3,4,5 represent no, novice, intermediate, advanced, expert knowledge respectively
-  
-        Sentiment: Negative
-  
-      Expected Output Format:
-      Markdown or Plain Text
-  
-      Expected Output:
-      1. One or two paragraph of summary. Example: The candidate has novice knowledge in closure, and has intermediate knowledge in arrow function. 
-      2. Section for learning material. Include zero or one learning material related for each lacking skill. Example: https://www.w3schools.com/js/js_function_closures.asp. No need to group the learning material keep in plain unordered list like * skill - link, * skill - link etc
-  
-      Example Output:
-      
-        ## Summary:
-        The candidate demonstrates a strong understanding of JavaScript fundamentals, including object creation, object manipulation, and asynchronous programming. They possess intermediate knowledge of closure functions and generator functions. However, their understanding of Object.assign vs Object.create and mutable vs immutable concepts needs further development. In TypeScript, the candidate shows competency in basic concepts and configuring TypeScript environments. They have a basic grasp of cloud platform fundamentals and a good understanding of the DRY principle.
-  
-        ### Suggested Learning Resources:
-  
-        * closure - https://www.w3schools.com/js/js_function_closures.asp
-        * arrow function - https://www.w3schools.com/js/js_arrow_functions.asp
-     
-  
-      `;;
-      break;
-    default:
-      break;
-  }
+      `;
 
   const [summary, setSummary] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const generateSummary = async () => {
     setIsLoading(true);
-    const response = await fetch(`/interview/api`, {
-      method: 'POST',
-      body: aiPrompt
-    });
-    const data = await response.text();
-    setSummary(data || 'Something went wrong, please try again.');
-    setIsLoading(false);
+    try {
+      const response = await fetch(`/interview/api`, {
+        method: 'POST',
+        body: aiPrompt
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.text();
+      console.log({data});
+      setSummary(data || 'Failed to response from AI, please try again.');
+
+    } catch (error) {
+      console.error('Error fetching summary:', error);
+      setSummary('Something went wrong, please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
     <>
-      {/* You can open the modal using document.getElementById('ID').showModal() method */}
       <dialog id="ai-feedback-modal" className="modal modal-open">
         <div className="modal-box">
           <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={props.close}>✕</button>
           </form>
           <h3 className="font-bold text-lg">Feedback Summary</h3>
-          {/* <p className="py-4">{props.feedback}</p> */}
-         <div className="flex flex-row justify-center mt-8 mb-4">
-         <button className="btn btn-secondary btn-sm" onClick={generateSummary} disabled={isLoading}>
-            {isLoading ? 'Generating...' : 'Generate Summary'}
-          </button>
-         </div>
-          {summary && <div className="pt-4">{summary}</div>}
+          <div className="flex flex-row justify-center mt-8 mb-4">
+            <button className="btn btn-secondary btn-sm" onClick={generateSummary} disabled={isLoading}>
+              {isLoading ? 'Generating...' : 'Generate Summary'}
+            </button>
+          </div>
+          {summary && <ReactMarkdown className="pt-4 prose">{summary}</ReactMarkdown>}
         </div>
       </dialog>
     </>
