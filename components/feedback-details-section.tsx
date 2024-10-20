@@ -19,13 +19,13 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
             <div key={index}>
               <strong>## {skill}:-</strong>
               <div>
-                {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "5") && (
+                {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "expert") && (
                   <section id="expert">
                     <span>### Has expert knowledge in</span>
                     <ul>
                       {Object.keys(feedback[skill]).map(
                         (level: string, index: number) => {
-                          if (feedback[skill][level] === "5") {
+                          if (feedback[skill][level] === "expert") {
                             return <li key={index}> - {level}</li>;
                           }
                         }
@@ -33,13 +33,13 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
                     </ul>
                   </section>
                 )}
-                {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "4") && (
+                {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "advanced") && (
                   <section id="advanced">
                     <span>### Has advanced knowledge in</span>
                     <ul>
                       {Object.keys(feedback[skill])?.map(
                         (level: string, index: number) => {
-                          if (feedback[skill][level] === "4") {
+                          if (feedback[skill][level] === "advanced") {
                             return <li key={index}> - {level}</li>;
                           }
                         }
@@ -47,13 +47,13 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
                     </ul>
                   </section>
                 )}
-                {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "3") && (
+                {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "intermediate") && (
                   <section id="intermediate">
                     <span># Has intermediate knowledge in</span>
                     <ul>
                       {Object.keys(feedback[skill])?.map(
                         (level: string, index: number) => {
-                          if (feedback[skill][level] === "3") {
+                          if (feedback[skill][level] === "intermediate") {
                             return <li key={index}> - {level}</li>;
                           }
                         }
@@ -61,14 +61,14 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
                     </ul>
                   </section>
                 )}
-                {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "2") && (
+                {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "novice") && (
                   <section id="novice">
                     <div>
                       <span>### Has novice knowledge in</span>
                       <ul>
                         {Object.keys(feedback[skill])?.map(
                           (level: string, index: number) => {
-                            if (feedback[skill][level] === "2") {
+                            if (feedback[skill][level] === "novice") {
                               return <li key={index}> - {level}</li>;
                             }
                           }
@@ -77,13 +77,13 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
                     </div>
                   </section>
                 )}
-                {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "1") && (
+                {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "no") && (
                   <section id="no">
                     <span>### Has NO knowledge in</span>
                     <ul>
                       {Object.keys(feedback[skill])?.map(
                         (level: string, index: number) => {
-                          if (feedback[skill][level] === "1") {
+                          if (feedback[skill][level] === "no") {
                             return <li key={index}> - {level}</li>;
                           }
                         }
