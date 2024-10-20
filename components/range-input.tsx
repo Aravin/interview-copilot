@@ -1,6 +1,24 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+const numberToStringMap = new Map([
+  [0, "not rated"],
+  [1, "no"],
+  [2, "novice"],
+  [3, "intermediate"],
+  [4, "advanced"],
+  [5, "expert"],
+]);
+
+function rangeToString(range: number): string {
+  return numberToStringMap.get(range) || "not rated"; // Default to "not rated" if not found
+}
+
+function rangeToNumber(range: string): number {
+  return Array.from(numberToStringMap.entries()).findIndex(([key, value]) => value === range);
+}
+
+
 export default function RangeInput({
   id,
   question,
@@ -12,7 +30,7 @@ export default function RangeInput({
 }) {
   const [isClient, setIsClient] = useState(false);
   const interviewId = useSearchParams().get("id");
-  const [range, setRange] = useState<string>(level || "0");
+  const [range, setRange] = useState<number>(rangeToNumber(level || '0'));
 
   useEffect(() => {
     setIsClient(true);
@@ -30,7 +48,7 @@ export default function RangeInput({
       if (!q[id][question]) {
         q[id][question] = null;
       }
-      q[id][question] = e.target.value;
+      q[id][question] = rangeToString(parseInt(e.target.value, 10));
 
       localStorage.setItem(`icf-${interviewId}`, JSON.stringify(q));
     }
