@@ -1,7 +1,7 @@
 "use client";
 
 import Question from "@/components/question";
-import json from "@/app/js.json";
+import json from "@/app/js-v2.json";
 import { FeedbackDetailsSection } from "@/components/feedback-details-section";
 import { Suspense, useLayoutEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
