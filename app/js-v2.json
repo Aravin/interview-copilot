@@ -50,8 +50,10 @@
   ],
   "Node.js Framework": [
     "Middlewares",
+    "Different node.js framework knowledge",
     "Error Handling",
-    "Routing",
+    "Routing, versioning etc",
+    "Handing request, response, query, params",
     "MVC Architecture",
     "Best Practices",
     "Optimizations"
