@@ -103,12 +103,15 @@
     "Testing Pyramid",
     "AAA method",
     "Integration Testing",
-    "E2E Testing",
+    "E2E Testing"
+  ],
+  "Code Quality": [
+    "Code Review Process",
     "Code Coverage Tool",
     "Static/Dynamic Code Analysis Tool",
     "Lint & Prettier",
     "Git Hooks"
-  ],
+  ]
   "Software Security": [
     "OWASP top 10",
     "CORS",
