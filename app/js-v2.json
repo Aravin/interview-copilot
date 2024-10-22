@@ -111,7 +111,7 @@
     "Static/Dynamic Code Analysis Tool",
     "Lint & Prettier",
     "Git Hooks"
-  ]
+  ],
   "Software Security": [
     "OWASP top 10",
     "CORS",
