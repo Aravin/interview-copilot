@@ -39,6 +39,7 @@
     "Micro & Macro task queue",
     "process.nextTick()",
     "Cluster Module",
+    "Child Process Module",
     "Worker-thread Module",
     "Buffers & Streams",
     "Event Emitter",
