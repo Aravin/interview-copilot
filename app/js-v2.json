@@ -25,6 +25,7 @@
     "Basics, Pros & Cons",
     "Configure TypeScript & tsconfig.json",
     "Basic Code Example",
+    "Union Type",
     "Types and Interfaces",
     "Utility Types (partial, required, readonly, pick, omit, etc..)",
     "Type Guard",
