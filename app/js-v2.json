@@ -47,6 +47,7 @@
     "Event Emitter",
     "Node.js APIs (file, crypto, OS etc)",
     "Error handling",
+    "Graceful Shutdown",
     "Package managers (npm, yarn etc)",
     "Package.json vs Package-lock.json",
     "dependency vs devDependency"
