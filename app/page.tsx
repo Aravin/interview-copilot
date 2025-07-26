@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { NewInterviewModal } from "@/components/new-interview-modal";
 import { useEffect, useState } from "react";
+import { safeLocalStorage } from "@/app/utils/functions";
 
 export default function Home() {
   let feedbacks = [];
@@ -15,9 +16,9 @@ export default function Home() {
   }, [])
 
   if (isClient) {
-    interviewId = localStorage.getItem("icf_latest_interview");
+    interviewId = safeLocalStorage.getItem("icf_latest_interview");
 
-    for (var key in localStorage) {
+    for (var key in safeLocalStorage) {
       if (key.includes("icf-")) {
         feedbacks.push(key.replace("icf-", ""));
       }

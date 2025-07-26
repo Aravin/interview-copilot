@@ -1,4 +1,5 @@
 import { FeedbackData } from "../types";
+import { useState } from "react";
 
 export const generateMarkdownFeedback = (feedback: FeedbackData) => {
   if (!feedback) return "";
@@ -81,3 +82,95 @@ const getRatingDescription = (rating: number) => {
       return "";
   }
 }
+
+// Safe localStorage utilities to prevent SSR errors
+export const safeLocalStorage = {
+  getItem: (key: string): string | null => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(key);
+    }
+    return null;
+  },
+  
+  setItem: (key: string, value: string): void => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(key, value);
+    }
+  },
+  
+  removeItem: (key: string): void => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(key);
+    }
+  },
+  
+  clear: (): void => {
+    if (typeof window !== 'undefined') {
+      localStorage.clear();
+    }
+  },
+  
+  key: (index: number): string | null => {
+    if (typeof window !== 'undefined') {
+      return localStorage.key(index);
+    }
+    return null;
+  },
+  
+  get length(): number {
+    if (typeof window !== 'undefined') {
+      return localStorage.length;
+    }
+    return 0;
+  }
+};
+
+// Utility function to get JSON from localStorage safely
+export const getLocalStorageJSON = (key: string, defaultValue: any = null): any => {
+  try {
+    const item = safeLocalStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultValue;
+  } catch (error) {
+    console.error(`Error parsing localStorage item ${key}:`, error);
+    return defaultValue;
+  }
+};
+
+// Utility function to set JSON to localStorage safely
+export const setLocalStorageJSON = (key: string, value: any): void => {
+  try {
+    safeLocalStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(`Error setting localStorage item ${key}:`, error);
+  }
+};
+
+// Hook for safely accessing localStorage
+export const useLocalStorage = <T>(key: string, initialValue: T) => {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === 'undefined') {
+      return initialValue;
+    }
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error(`Error reading localStorage key "${key}":`, error);
+      return initialValue;
+    }
+  });
+
+  const setValue = (value: T | ((val: T) => T)) => {
+    try {
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      }
+    } catch (error) {
+      console.error(`Error setting localStorage key "${key}":`, error);
+    }
+  };
+
+  return [storedValue, setValue] as const;
+};

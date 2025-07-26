@@ -1,5 +1,6 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { getLocalStorageJSON, setLocalStorageJSON } from "@/app/utils/functions";
 
 const numberToStringMap = new Map([
   [0, "not rated"],
@@ -39,8 +40,8 @@ export default function RangeInput({
   const updateRange = (e: any) => {
     setRange(e.target.value);
 
-    if (isClient) {
-      let q = JSON.parse(localStorage.getItem(`icf-${interviewId}`) || "{}");
+    if (isClient && interviewId) {
+      let q = getLocalStorageJSON(`icf-${interviewId}`, {});
 
       if (!q[id]) {
         q[id] = {};
@@ -50,7 +51,7 @@ export default function RangeInput({
       }
       q[id][question] = rangeToString(parseInt(e.target.value, 10));
 
-      localStorage.setItem(`icf-${interviewId}`, JSON.stringify(q));
+      setLocalStorageJSON(`icf-${interviewId}`, q);
     }
     window.dispatchEvent(
       new Event("feedback.updated", { bubbles: false, cancelable: false })

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { safeLocalStorage } from "@/app/utils/functions";
 
 export const FeedbackList = () => {
   const [isClient, setIsClient] = useState(false);
@@ -14,7 +15,7 @@ export const FeedbackList = () => {
   }, []);
 
   if (isClient) {
-    for (var key in localStorage) {
+    for (var key in safeLocalStorage) {
       if (key.includes("icf-")) {
         feedbacks.push(key.replace("icf-", ""));
       }
@@ -22,13 +23,15 @@ export const FeedbackList = () => {
   }
 
   const deleteFeedback = (id: string) => {
-    isClient && localStorage.removeItem(`icf-${id}`);
-    const i = feedbacks.findIndex((value) => value === id);
-    feedbacks.splice(i, 1);
-    if (feedbacks.length === 0) {
-      localStorage.removeItem('icf_latest_interview');
+    if (isClient) {
+      safeLocalStorage.removeItem(`icf-${id}`);
+      const i = feedbacks.findIndex((value) => value === id);
+      feedbacks.splice(i, 1);
+      if (feedbacks.length === 0) {
+        safeLocalStorage.removeItem('icf_latest_interview');
+      }
+      router.refresh();
     }
-    router.refresh();
   };
 
   return (
