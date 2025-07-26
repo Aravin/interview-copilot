@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 
 const IMPROVEMENT_SECTIONS = [
-  { level: "no", title: "No knowledge in following/Learn following:", headingLevel: "####" },
-  { level: "novice", title: "Needs improvement in following:", headingLevel: "###" }
+  { level: "no", title: "No knowledge in following/Learn following:", headingLevel: "#" },
+  { level: "novice", title: "Needs improvement in following:", headingLevel: "#" }
 ] as const;
 
 export const FeedbackImprovementSection = ({ feedback }: any) => {

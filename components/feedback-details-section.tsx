@@ -50,12 +50,12 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
         <div className="collapse-content text-xs overflow-scroll flex flex-row">
           <div className="flex-1">
             {processedFeedback.map((skillData: any, skillIndex: number) => (
-              <div key={`skill-${skillIndex}`}>
-                <strong>## {skillData.skill}:-</strong>
-                <div>
-                  {skillData.skillLevels.map((levelData: any, levelIndex: number) => (
-                    <section key={`${skillIndex}-${levelIndex}`} id={levelData.level}>
-                      <span>### {levelData.title}</span>
+                              <div key={`skill-${skillIndex}`}>
+                  <strong># {skillData.skill}:-</strong>
+                  <div>
+                    {skillData.skillLevels.map((levelData: any, levelIndex: number) => (
+                      <section key={`${skillIndex}-${levelIndex}`} id={levelData.level}>
+                        <span>## {levelData.title}</span>
                       <ul>
                         {levelData.questions.map((question: string, questionIndex: number) => (
                           <li key={`${skillIndex}-${levelIndex}-${questionIndex}`}> - {question}</li>
