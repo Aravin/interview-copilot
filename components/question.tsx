@@ -1,4 +1,5 @@
 import RangeInput from "./range-input";
+import CopyButton from "./copy-button";
 
 export const Question = ({
   id,
@@ -11,7 +12,10 @@ export const Question = ({
 }) => {
   return (
     <div className="flex flex-col gap-2 p-2 border rounded-lg">
-      <div className="text-sm font-medium">{question}</div>
+      <div className="flex items-center gap-2 group">
+        <div className="text-sm font-medium">{question}</div>
+        <CopyButton textToCopy={question} />
+      </div>
       <RangeInput id={id} question={question} level={level || undefined} />
     </div>
   );
