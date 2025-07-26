@@ -24,7 +24,7 @@ function CopyButton({ textToCopy }: { textToCopy: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="btn btn-square btn-xs opacity-0 hover:opacity-100 transition-opacity duration-300"
+      className="btn btn-square btn-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300"
     >
       {isCopied ? <DocumentCheckIcon /> : <ClipboardDocumentIcon />}
     </button>

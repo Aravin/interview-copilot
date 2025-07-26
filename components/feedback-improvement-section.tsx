@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import CopyButton from "./copy-button";
 
 const IMPROVEMENT_SECTIONS = [
   { level: "no", title: "No knowledge in following/Learn following:", headingLevel: "#" },
@@ -29,14 +30,32 @@ export const FeedbackImprovementSection = ({ feedback }: any) => {
     }).filter(Boolean);
   }, [feedback]);
 
+  // Function to format improvement section as markdown text
+  const formatImprovementSectionAsMarkdown = (section: any) => {
+    let markdown = `${section.title}\\n`;
+    
+    section.skillsWithLevel.forEach((skillData: any) => {
+      markdown += `${section.headingLevel} ${skillData.skillName}\\n`;
+      skillData.questions.forEach((question: string) => {
+        markdown += `- ${question}\\n`;
+      });
+      markdown += `\\n`;
+    });
+    
+    return markdown;
+  };
+
   return (
     <div className="collapse collapse-plus border-base-300 bg-base-200 border ">
       <input type="checkbox" />
       <div className="collapse-title text-xl font-medium">Improvement</div>
-      <div className="collapse-content text-xs overflow-auto mt-4 mb-4">
+      <div className="collapse-content text-xs overflow-auto">
         {improvementData.map((section: any, sectionIndex: number) => (
           <div key={`section-${sectionIndex}`}>
-            <strong>{section.title}</strong>
+            <div className="flex items-center gap-2 group">
+              <strong>{section.title}</strong>
+              <CopyButton textToCopy={formatImprovementSectionAsMarkdown(section)} />
+            </div>
             {section.skillsWithLevel.map((skillData: any, skillIndex: number) => (
               <div key={`${sectionIndex}-${skillIndex}`}>
                 <span>{section.headingLevel} {skillData.skillName}</span>

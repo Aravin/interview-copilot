@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { FeedbackAISummarySection } from "./feedback-ai-summary";
+import CopyButton from "./copy-button";
 
 function removeEmptyObjects(obj: { [x: string]: any; }) {
   for (const key in obj) {
@@ -22,6 +23,21 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+  // Function to format skill data as markdown text
+  const formatSkillAsMarkdown = (skillData: any) => {
+    let markdown = `# ${skillData.skill}:-\\n`;
+    
+    skillData.skillLevels.forEach((levelData: any) => {
+      markdown += `## ${levelData.title}\\n`;
+      levelData.questions.forEach((question: string) => {
+        markdown += `- ${question}\\n`;
+      });
+      markdown += `\\n`;
+    });
+    
+    return markdown;
+  };
 
   // Memoize the processed feedback data to avoid recalculating on every render
   const processedFeedback = useMemo(() => {
@@ -50,9 +66,12 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
         <div className="collapse-content text-xs overflow-scroll flex flex-row">
           <div className="flex-1">
             {processedFeedback.map((skillData: any, skillIndex: number) => (
-                              <div key={`skill-${skillIndex}`}>
+              <div key={`skill-${skillIndex}`}>
+                <div className="flex items-center gap-2 group">
                   <strong># {skillData.skill}:-</strong>
-                  <div>
+                  <CopyButton textToCopy={formatSkillAsMarkdown(skillData)} />
+                </div>
+                <div>
                     {skillData.skillLevels.map((levelData: any, levelIndex: number) => (
                       <section key={`${skillIndex}-${levelIndex}`} id={levelData.level}>
                         <span>## {levelData.title}</span>
