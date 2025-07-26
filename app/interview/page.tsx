@@ -3,7 +3,7 @@
 import { Question } from "@/components/question";
 import json from "@/app/js-v2.json";
 import { FeedbackDetailsSection } from "@/components/feedback-details-section";
-import { Suspense, useLayoutEffect, useState, useEffect } from "react";
+import { Suspense, useLayoutEffect, useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { FeedbackImprovementSection } from "@/components/feedback-improvement-section";
 import { getLocalStorageJSON } from "@/app/utils/functions";
@@ -19,6 +19,9 @@ function Interview() {
       setQ(feedbackData);
     }
   };
+
+  // Memoize the feedback data to prevent unnecessary re-renders
+  const memoizedFeedback = useMemo(() => q, [q]);
 
   useEffect(() => {
     setIsClient(true);
@@ -59,10 +62,10 @@ function Interview() {
 
         <section className="flex flex-col overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-9rem)] p-2 gap-2"> 
           <div className="overflow-y-scroll">
-          <FeedbackDetailsSection feedback={q} />
+          <FeedbackDetailsSection feedback={memoizedFeedback} />
           </div>
           <div className="overflow-y-scroll">
-          <FeedbackImprovementSection feedback={q} />
+          <FeedbackImprovementSection feedback={memoizedFeedback} />
           </div>
         </section>
       </main>

@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { FeedbackAISummarySection } from "./feedback-ai-summary";
+
 function removeEmptyObjects(obj: { [x: string]: any; }) {
   for (const key in obj) {
     if (typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0) {
@@ -9,11 +10,37 @@ function removeEmptyObjects(obj: { [x: string]: any; }) {
   return obj;
 }
 
-export const FeedbackDetailsSection = ({ feedback }: any) => {
+const SKILL_LEVELS = [
+  { level: "expert", title: "Has expert knowledge in" },
+  { level: "advanced", title: "Has advanced knowledge in" },
+  { level: "intermediate", title: "Has intermediate knowledge in" },
+  { level: "novice", title: "Has novice knowledge in" },
+  { level: "no", title: "Has NO knowledge in" }
+] as const;
 
+export const FeedbackDetailsSection = ({ feedback }: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+  // Memoize the processed feedback data to avoid recalculating on every render
+  const processedFeedback = useMemo(() => {
+    if (!feedback || typeof feedback !== 'object') return [];
+    
+    return Object.entries(feedback).map(([skill, skillData]: [string, any]) => {
+      if (!skillData || typeof skillData !== 'object') return null;
+      
+      const skillLevels = SKILL_LEVELS.map(({ level, title }) => {
+        const questions = Object.entries(skillData)
+          .filter(([_, value]) => value === level)
+          .map(([question]) => question);
+        
+        return questions.length > 0 ? { level, title, questions } : null;
+      }).filter(Boolean);
+      
+      return skillLevels.length > 0 ? { skill, skillLevels } : null;
+    }).filter(Boolean);
+  }, [feedback]);
 
   return (
     <div className="relative">
@@ -22,88 +49,24 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
         <div className="collapse-title text-xl font-medium">Feedback</div>
         <div className="collapse-content text-xs overflow-scroll flex flex-row">
           <div className="flex-1">
-            {feedback && Object.keys(feedback).map((skill: string, index: number) => {
-              return (
-                <div key={index}>
-                  <strong>## {skill}:-</strong>
-                  <div>
-                    {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "expert") && (
-                      <section id="expert">
-                        <span>### Has expert knowledge in</span>
-                        <ul>
-                          {Object.keys(feedback[skill]).map(
-                            (level: string, index: number) => {
-                              if (feedback[skill][level] === "expert") {
-                                return <li key={index}> - {level}</li>;
-                              }
-                            }
-                          )}
-                        </ul>
-                      </section>
-                    )}
-                    {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "advanced") && (
-                      <section id="advanced">
-                        <span>### Has advanced knowledge in</span>
-                        <ul>
-                          {Object.keys(feedback[skill])?.map(
-                            (level: string, index: number) => {
-                              if (feedback[skill][level] === "advanced") {
-                                return <li key={index}> - {level}</li>;
-                              }
-                            }
-                          )}
-                        </ul>
-                      </section>
-                    )}
-                    {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "intermediate") && (
-                      <section id="intermediate">
-                        <span># Has intermediate knowledge in</span>
-                        <ul>
-                          {Object.keys(feedback[skill])?.map(
-                            (level: string, index: number) => {
-                              if (feedback[skill][level] === "intermediate") {
-                                return <li key={index}> - {level}</li>;
-                              }
-                            }
-                          )}
-                        </ul>
-                      </section>
-                    )}
-                    {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "novice") && (
-                      <section id="novice">
-                        <div>
-                          <span>### Has novice knowledge in</span>
-                          <ul>
-                            {Object.keys(feedback[skill])?.map(
-                              (level: string, index: number) => {
-                                if (feedback[skill][level] === "novice") {
-                                  return <li key={index}> - {level}</li>;
-                                }
-                              }
-                            )}
-                          </ul>
-                        </div>
-                      </section>
-                    )}
-                    {Object.keys(feedback[skill]).find((_) => feedback[skill][_] === "no") && (
-                      <section id="no">
-                        <span>### Has NO knowledge in</span>
-                        <ul>
-                          {Object.keys(feedback[skill])?.map(
-                            (level: string, index: number) => {
-                              if (feedback[skill][level] === "no") {
-                                return <li key={index}> - {level}</li>;
-                              }
-                            }
-                          )}
-                        </ul>
-                      </section>
-                    )}
-                  </div>
-                  <hr className="divider" />
+            {processedFeedback.map((skillData: any, skillIndex: number) => (
+              <div key={`skill-${skillIndex}`}>
+                <strong>## {skillData.skill}:-</strong>
+                <div>
+                  {skillData.skillLevels.map((levelData: any, levelIndex: number) => (
+                    <section key={`${skillIndex}-${levelIndex}`} id={levelData.level}>
+                      <span>### {levelData.title}</span>
+                      <ul>
+                        {levelData.questions.map((question: string, questionIndex: number) => (
+                          <li key={`${skillIndex}-${levelIndex}-${questionIndex}`}> - {question}</li>
+                        ))}
+                      </ul>
+                    </section>
+                  ))}
                 </div>
-              );
-            })}
+                <hr className="divider" />
+              </div>
+            ))}
           </div>
           <div>
             {isModalOpen && <FeedbackAISummarySection close={toggleModal} feedback={JSON.stringify(removeEmptyObjects(feedback))} />}
