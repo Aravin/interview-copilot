@@ -7,29 +7,35 @@ import { safeLocalStorage } from "@/app/utils/functions";
 
 export const FeedbackList = () => {
   const [isClient, setIsClient] = useState(false);
+  const [feedbacks, setFeedbacks] = useState<string[]>([]);
   const router = useRouter();
-  const feedbacks: string[] = [];
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
-
-  if (isClient) {
-    for (var key in safeLocalStorage) {
-      if (key.includes("icf-")) {
-        feedbacks.push(key.replace("icf-", ""));
+    
+    // Get all feedback keys from localStorage
+    const feedbackKeys: string[] = [];
+    if (typeof window !== 'undefined') {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.includes("icf-")) {
+          feedbackKeys.push(key.replace("icf-", ""));
+        }
       }
     }
-  }
+    setFeedbacks(feedbackKeys);
+  }, []);
 
   const deleteFeedback = (id: string) => {
     if (isClient) {
       safeLocalStorage.removeItem(`icf-${id}`);
-      const i = feedbacks.findIndex((value) => value === id);
-      feedbacks.splice(i, 1);
-      if (feedbacks.length === 0) {
-        safeLocalStorage.removeItem('icf_latest_interview');
-      }
+      setFeedbacks(prevFeedbacks => {
+        const newFeedbacks = prevFeedbacks.filter(feedback => feedback !== id);
+        if (newFeedbacks.length === 0) {
+          safeLocalStorage.removeItem('icf_latest_interview');
+        }
+        return newFeedbacks;
+      });
       router.refresh();
     }
   };
@@ -47,7 +53,7 @@ export const FeedbackList = () => {
         <tbody>
           {feedbacks.map((value, index) => (
             <tr key={index}>
-              <th>1</th>
+              <th>{index + 1}</th>
               <td>{value}</td>
               <td>
                 <Link className="link" href={`/interview?id=${value}`}>

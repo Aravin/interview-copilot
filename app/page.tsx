@@ -6,24 +6,29 @@ import { useEffect, useState } from "react";
 import { safeLocalStorage } from "@/app/utils/functions";
 
 export default function Home() {
-  let feedbacks = [];
-  let interviewId = null;
-
   const [isClient, setIsClient] = useState(false);
+  const [feedbacks, setFeedbacks] = useState<string[]>([]);
+  const [interviewId, setInterviewId] = useState<string | null>(null);
 
   useEffect(() => {
     setIsClient(true);
-  }, [])
+    
+    // Get the latest interview ID
+    const latestInterview = safeLocalStorage.getItem("icf_latest_interview");
+    setInterviewId(latestInterview);
 
-  if (isClient) {
-    interviewId = safeLocalStorage.getItem("icf_latest_interview");
-
-    for (var key in safeLocalStorage) {
-      if (key.includes("icf-")) {
-        feedbacks.push(key.replace("icf-", ""));
+    // Get all feedback keys from localStorage
+    const feedbackKeys: string[] = [];
+    if (typeof window !== 'undefined') {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.includes("icf-")) {
+          feedbackKeys.push(key.replace("icf-", ""));
+        }
       }
     }
-  }
+    setFeedbacks(feedbackKeys);
+  }, []);
 
   return (
     <main className="flex p-2 m-2 gap-8">
