@@ -20,7 +20,6 @@ function Interview() {
     }
   };
 
-  // Memoize the feedback data to prevent unnecessary re-renders
   const memoizedFeedback = useMemo(() => q, [q]);
 
   useEffect(() => {
@@ -38,23 +37,39 @@ function Interview() {
     <Suspense fallback={<>questions loading...</>}>
       <main className="grid grid-cols-[2fr_2fr] p-2 m-2 gap-8">
         <section className="overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-9rem)] p-2">
-          {isClient && q && Object.keys(json).map((title: string, index: number) => (
+          {!isClient ? (
+            <div className="flex items-center justify-center h-32">
+              <span className="loading loading-spinner loading-lg"></span>
+              <span className="ml-2">Loading questions...</span>
+            </div>
+          ) : Object.keys(json).map((title: string, index: number) => (
             <div className="collapse collapse-plus bg-base-200 m-1" key={index}>
               <input type="checkbox" />
               <div className="collapse-title text-xl font-medium">{title}</div>
               <div className="collapse-content">
-                {(json as any)[title].map((question: string, index: number) => (
-                  <Question
-                    id={title}
-                    question={question}
-                    key={index}
-                    level={
-                      (q[title] &&
-                        (q[title][question] || q[title][question] === "0")) ||
-                      null
+                {(json as any)[title].map((question: string, index: number) => {
+                  let level = null;
+                  let comment = undefined;
+                  
+                  if (q[title] && q[title][question]) {
+                    if (typeof q[title][question] === 'string') {
+                      level = q[title][question];
+                    } else {
+                      level = q[title][question].level;
+                      comment = q[title][question].comment;
                     }
-                  />
-                ))}
+                  }
+                  
+                  return (
+                    <Question
+                      id={title}
+                      question={question}
+                      key={index}
+                      level={level}
+                      comment={comment}
+                    />
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -75,7 +90,6 @@ function Interview() {
 
 export default function Page() {
   return (
-    // You could have a loading skeleton as the `fallback` too
     <Suspense fallback={<>loading...</>}>
       <Interview />
     </Suspense>

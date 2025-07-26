@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { FeedbackAISummarySection } from "./feedback-ai-summary";
 import CopyButton from "./copy-button";
+import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline';
 
 function removeEmptyObjects(obj: { [x: string]: any; }) {
   for (const key in obj) {
@@ -24,22 +25,6 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
-  // Function to format skill data as markdown text
-  const formatSkillAsMarkdown = (skillData: any) => {
-    let markdown = `# ${skillData.skill}:-\\n`;
-    
-    skillData.skillLevels.forEach((levelData: any) => {
-      markdown += `## ${levelData.title}\\n`;
-      levelData.questions.forEach((question: string) => {
-        markdown += `- ${question}\\n`;
-      });
-      markdown += `\\n`;
-    });
-    
-    return markdown;
-  };
-
-  // Memoize the processed feedback data to avoid recalculating on every render
   const processedFeedback = useMemo(() => {
     if (!feedback || typeof feedback !== 'object') return [];
     
@@ -48,8 +33,22 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
       
       const skillLevels = SKILL_LEVELS.map(({ level, title }) => {
         const questions = Object.entries(skillData)
-          .filter(([_, value]) => value === level)
-          .map(([question]) => question);
+          .filter(([_, value]) => {
+            if (typeof value === 'string') {
+              return value === level;
+            } else if (value && typeof value === 'object' && 'level' in value) {
+              return (value as any).level === level;
+            }
+            return false;
+          })
+          .map(([question, value]) => {
+            if (typeof value === 'string') {
+              return { question, comment: undefined };
+            } else if (value && typeof value === 'object' && 'level' in value) {
+              return { question, comment: (value as any).comment };
+            }
+            return { question, comment: undefined };
+          });
         
         return questions.length > 0 ? { level, title, questions } : null;
       }).filter(Boolean);
@@ -57,6 +56,24 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
       return skillLevels.length > 0 ? { skill, skillLevels } : null;
     }).filter(Boolean);
   }, [feedback]);
+
+  const formatSkillAsMarkdown = (skillData: any) => {
+    let markdown = `# ${skillData.skill}:-\n`;
+    
+    skillData.skillLevels.forEach((levelData: any) => {
+      markdown += `## ${levelData.title}\n`;
+      levelData.questions.forEach((questionData: any) => {
+        markdown += `- ${questionData.question}`;
+        if (questionData.comment) {
+          markdown += ` (Comment: ${questionData.comment})`;
+        }
+        markdown += `\n`;
+      });
+      markdown += `\n`;
+    });
+    
+    return markdown;
+  };
 
   return (
     <div className="relative">
@@ -76,8 +93,18 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
                       <section key={`${skillIndex}-${levelIndex}`} id={levelData.level}>
                         <span>## {levelData.title}</span>
                       <ul>
-                        {levelData.questions.map((question: string, questionIndex: number) => (
-                          <li key={`${skillIndex}-${levelIndex}-${questionIndex}`}> - {question}</li>
+                        {levelData.questions.map((questionData: any, questionIndex: number) => (
+                          <li key={`${skillIndex}-${levelIndex}-${questionIndex}`}>
+                            - {questionData.question}
+                            {questionData.comment && (
+                              <span 
+                                className="text-blue-600 text-xs ml-2 cursor-help" 
+                                title={questionData.comment}
+                              >
+                                <ChatBubbleLeftRightIcon className="w-3 h-3 inline" />
+                              </span>
+                            )}
+                          </li>
                         ))}
                       </ul>
                     </section>
@@ -93,16 +120,14 @@ export const FeedbackDetailsSection = ({ feedback }: any) => {
         </div>
       </div>
       
-      {/* Floating Summarize Button */}
-      <button 
-        className="fixed bottom-6 right-6 btn btn-primary btn-circle shadow-lg hover:shadow-xl transition-all duration-200 z-50"
-        onClick={toggleModal}
-        title="Summarize Feedback"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-      </button>
+      <div className="absolute top-2 right-2">
+        <button 
+          className="btn btn-primary btn-sm" 
+          onClick={toggleModal}
+        >
+          Summarize with AI
+        </button>
+      </div>
     </div>
-  )
+  );
 };

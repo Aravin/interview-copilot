@@ -6,35 +6,56 @@ export const generateMarkdownFeedback = (feedback: FeedbackData) => {
 
   return Object.keys(feedback)
     .map((skill) => {
-      let markdown = `## ${skill}:-\n`; // Skill heading
+      let markdown = `## ${skill}:-\n`;
 
       for (let rating = 5; rating >= 1; rating--) {
-        // Iterate through ratings in descending order
         const matchingLevels = Object.keys(feedback[skill]).filter(
-          (level) => feedback[skill][level] === rating.toString()
+          (level) => {
+            const value = feedback[skill][level];
+            if (typeof value === 'string') {
+              return value === rating.toString();
+            } else if (value && typeof value === 'object' && 'level' in value) {
+              return (value as any).level === rating.toString();
+            }
+            return false;
+          }
         );
 
         if (matchingLevels.length > 0) {
-          // Only add a section if there are matching levels
-          markdown += `\n### ${getRatingDescription(rating)} in\n`; // Rating description
-          markdown += matchingLevels.map((level) => `- ${level}`).join("\n") + "\n"; // List of levels
+          markdown += `\n### ${getRatingDescription(rating)} in\n`;
+          markdown += matchingLevels.map((level) => {
+            const value = feedback[skill][level];
+            let comment = '';
+            if (value && typeof value === 'object' && 'comment' in value && (value as any).comment) {
+              comment = ` (Comment: ${(value as any).comment})`;
+            }
+            return `- ${level}${comment}`;
+          }).join("\n") + "\n";
         }
       }
 
       return markdown;
     })
-    .join("\n---\n"); // Join skills with horizontal rules
+    .join("\n---\n");
 }
 
 export const extractSkillsByRatingMarkdown = (
-  feedback: Record<string, Record<string, string>>,
-  targetRatings: string[] = ['1'] // Default to an array with rating '1'
+  feedback: Record<string, Record<string, any>>,
+  targetRatings: string[] = ['1']
 ): string => {
   const skillsByRating: { [rating: string]: { [skill: string]: string[] } } = {};
 
-  // Group skills by rating
   for (const [skillCategory, levels] of Object.entries(feedback)) {
-    for (const [level, rating] of Object.entries(levels)) {
+    for (const [level, value] of Object.entries(levels)) {
+      let rating: string;
+      if (typeof value === 'string') {
+        rating = value;
+      } else if (value && typeof value === 'object' && 'level' in value) {
+        rating = (value as any).level;
+      } else {
+        continue;
+      }
+      
       if (targetRatings.includes(rating)) { 
         if (!skillsByRating[rating]) {
           skillsByRating[rating] = {};
@@ -47,7 +68,6 @@ export const extractSkillsByRatingMarkdown = (
     }
   }
 
-  // Generate Markdown output
   let markdown = '';
   for (const targetRating of targetRatings) {
     if (skillsByRating[targetRating]) {
@@ -65,25 +85,17 @@ export const extractSkillsByRatingMarkdown = (
   return markdown;
 };
 
-// Helper function for rating descriptions
-const getRatingDescription = (rating: number) => {
-  switch (rating) {
-    case 5:
-      return "Has expert knowledge";
-    case 4:
-      return "Has advanced knowledge";
-    case 3:
-      return "Has intermediate knowledge";
-    case 2:
-      return "Has novice knowledge";
-    case 1:
-      return "Has NO knowledge";
-    default:
-      return "";
-  }
+function getRatingDescription(rating: number): string {
+  const descriptions = [
+    "No knowledge",
+    "Novice",
+    "Intermediate", 
+    "Advanced",
+    "Expert"
+  ];
+  return descriptions[rating - 1] || "Unknown";
 }
 
-// Safe localStorage utilities to prevent SSR errors
 export const safeLocalStorage = {
   getItem: (key: string): string | null => {
     if (typeof window !== 'undefined') {
@@ -125,7 +137,6 @@ export const safeLocalStorage = {
   }
 };
 
-// Utility function to get JSON from localStorage safely
 export const getLocalStorageJSON = (key: string, defaultValue: any = null): any => {
   try {
     const item = safeLocalStorage.getItem(key);
@@ -136,7 +147,6 @@ export const getLocalStorageJSON = (key: string, defaultValue: any = null): any 
   }
 };
 
-// Utility function to set JSON to localStorage safely
 export const setLocalStorageJSON = (key: string, value: any): void => {
   try {
     safeLocalStorage.setItem(key, JSON.stringify(value));
@@ -145,7 +155,6 @@ export const setLocalStorageJSON = (key: string, value: any): void => {
   }
 };
 
-// Hook for safely accessing localStorage
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === 'undefined') {

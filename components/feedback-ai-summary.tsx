@@ -17,10 +17,12 @@ ${props.feedback}
 ### Strengths
 - [List 2-3 strongest technical areas with scores]
 - [Brief explanation of why these are strengths]
+- [Include any relevant comments from the assessment]
 
 ### Weaknesses  
 - [List 2-3 areas needing improvement with scores]
 - [Brief explanation of impact on overall performance]
+- [Include any relevant comments from the assessment]
 
 ### Learning Resources for Upskill
 
@@ -37,6 +39,7 @@ For each weakness identified above, provide:
 - Prioritize hands-on, practical learning over theory
 - Include specific course names or documentation links when possible
 - Keep recommendations concise and actionable
+- Consider any specific comments or context provided in the assessment
 `;
 
   const [summary, setSummary] = useState('');

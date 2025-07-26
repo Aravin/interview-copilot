@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import CopyButton from "./copy-button";
+import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline';
 
 const IMPROVEMENT_SECTIONS = [
   { level: "no", title: "No knowledge in following/Learn following:", headingLevel: "#" },
@@ -7,7 +8,6 @@ const IMPROVEMENT_SECTIONS = [
 ] as const;
 
 export const FeedbackImprovementSection = ({ feedback }: any) => {
-  // Memoize the processed improvement data to avoid recalculating on every render
   const improvementData = useMemo(() => {
     if (!feedback || typeof feedback !== 'object') return [];
     
@@ -15,12 +15,33 @@ export const FeedbackImprovementSection = ({ feedback }: any) => {
       const skillsWithLevel = Object.entries(feedback)
         .filter(([_, skillData]: [string, any]) => 
           skillData && typeof skillData === 'object' && 
-          Object.values(skillData).some((value) => value === level)
+          Object.values(skillData).some((value) => {
+            if (typeof value === 'string') {
+              return value === level;
+            } else if (value && typeof value === 'object' && 'level' in value) {
+              return (value as any).level === level;
+            }
+            return false;
+          })
         )
         .map(([skillName, skillData]: [string, any]) => {
           const questions = Object.entries(skillData)
-            .filter(([_, value]) => value === level)
-            .map(([question]) => question);
+            .filter(([_, value]) => {
+              if (typeof value === 'string') {
+                return value === level;
+              } else if (value && typeof value === 'object' && 'level' in value) {
+                return (value as any).level === level;
+              }
+              return false;
+            })
+            .map(([question, value]) => {
+              if (typeof value === 'string') {
+                return { question, comment: undefined };
+              } else if (value && typeof value === 'object' && 'level' in value) {
+                return { question, comment: (value as any).comment };
+              }
+              return { question, comment: undefined };
+            });
           
           return questions.length > 0 ? { skillName, questions } : null;
         })
@@ -30,16 +51,19 @@ export const FeedbackImprovementSection = ({ feedback }: any) => {
     }).filter(Boolean);
   }, [feedback]);
 
-  // Function to format improvement section as markdown text
   const formatImprovementSectionAsMarkdown = (section: any) => {
-    let markdown = `${section.title}\\n`;
+    let markdown = `${section.title}\n`;
     
     section.skillsWithLevel.forEach((skillData: any) => {
-      markdown += `${section.headingLevel} ${skillData.skillName}\\n`;
-      skillData.questions.forEach((question: string) => {
-        markdown += `- ${question}\\n`;
+      markdown += `${section.headingLevel} ${skillData.skillName}\n`;
+      skillData.questions.forEach((questionData: any) => {
+        markdown += `- ${questionData.question}`;
+        if (questionData.comment) {
+          markdown += ` (Comment: ${questionData.comment})`;
+        }
+        markdown += `\n`;
       });
-      markdown += `\\n`;
+      markdown += `\n`;
     });
     
     return markdown;
@@ -60,8 +84,18 @@ export const FeedbackImprovementSection = ({ feedback }: any) => {
               <div key={`${sectionIndex}-${skillIndex}`}>
                 <span>{section.headingLevel} {skillData.skillName}</span>
                 <ul>
-                  {skillData.questions.map((question: string, questionIndex: number) => (
-                    <li key={`${sectionIndex}-${skillIndex}-${questionIndex}`}>- {question}</li>
+                  {skillData.questions.map((questionData: any, questionIndex: number) => (
+                    <li key={`${sectionIndex}-${skillIndex}-${questionIndex}`}>
+                      - {questionData.question}
+                      {questionData.comment && (
+                        <span 
+                          className="text-blue-600 text-xs ml-2 cursor-help" 
+                          title={questionData.comment}
+                        >
+                          <ChatBubbleLeftRightIcon className="w-3 h-3 inline" />
+                        </span>
+                      )}
+                    </li>
                   ))}
                 </ul>
               </div>
