@@ -61,10 +61,10 @@ function Interview() {
         </section>
 
         <section className="flex flex-col overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-9rem)] p-2 gap-2"> 
-          <div className="overflow-y-scroll">
+          <div className="overflow-y-scroll flex-1 min-h-0">
           <FeedbackDetailsSection feedback={memoizedFeedback} />
           </div>
-          <div className="overflow-y-scroll">
+          <div className="overflow-y-scroll flex-1 min-h-0">
           <FeedbackImprovementSection feedback={memoizedFeedback} />
           </div>
         </section>
