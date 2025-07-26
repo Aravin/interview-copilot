@@ -54,9 +54,14 @@ For each weakness identified above, provide:
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.text();
+      const data = await response.json();
       console.log({ data });
-      setSummary(data || 'Failed to response from AI, please try again.');
+      
+      if (data.response) {
+        setSummary(data.response);
+      } else {
+        setSummary('Failed to get response from AI, please try again.');
+      }
 
     } catch (error) {
       console.error('Error fetching summary:', error);
