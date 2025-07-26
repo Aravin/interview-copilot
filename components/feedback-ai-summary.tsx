@@ -8,29 +8,36 @@ type FeedbackAISummarySectionProps = {
 
 export const FeedbackAISummarySection = (props: FeedbackAISummarySectionProps) => {
 
-  let aiPrompt = `You are a helpful AI assistant designed to provide insightful feedback on technical skills assessments. Based on the following data, which represents a candidate's scores in various technical areas, generate a comprehensive summary and actionable recommendations:
+  let aiPrompt = `You are a technical skills assessment AI that provides focused, actionable feedback. Analyze the candidate's performance data and provide a structured response:
 
-      ${props.feedback}
-  
-     Output Format:
+${props.feedback}
 
-## Summary
+## Output Format (use exact headings):
 
-Strengths: [List the candidate's strongest areas based on high scores.]
+### Strengths
+- [List 2-3 strongest technical areas with scores]
+- [Brief explanation of why these are strengths]
 
-Weaknesses: [List areas where the candidate scored low and needs improvement.]
+### Weaknesses  
+- [List 2-3 areas needing improvement with scores]
+- [Brief explanation of impact on overall performance]
 
-## Recommendations
+### Learning Resources for Upskill
 
-For each identified weakness, provide the following:
+For each weakness identified above, provide:
 
-Area for Improvement: [Clearly state the specific skill or topic needing improvement.]
+**Skill: [Specific technical skill name]**
+- **Learning Topics:** [3-5 specific topics to focus on]
+- **Reference Sites:** [2-3 current, reliable learning platforms/resources]
+- **Practice Projects:** [1-2 hands-on project suggestions]
 
-Learning Resources: [Suggest relevant and accessible resources (e.g., online courses, tutorials, documentation) that directly address the weakness.]
-
-Additional Tips: [Offer any other helpful advice, such as practice exercises or projects.]
-  
-      `;
+**Requirements:**
+- Only include current, actively maintained resources (2023-2024)
+- Focus on free or affordable learning platforms
+- Prioritize hands-on, practical learning over theory
+- Include specific course names or documentation links when possible
+- Keep recommendations concise and actionable
+`;
 
   const [summary, setSummary] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +55,7 @@ Additional Tips: [Offer any other helpful advice, such as practice exercises or 
       }
 
       const data = await response.text();
-      console.log({data});
+      console.log({ data });
       setSummary(data || 'Failed to response from AI, please try again.');
 
     } catch (error) {
