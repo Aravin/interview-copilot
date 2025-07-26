@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 
 type FeedbackAISummarySectionProps = {
@@ -41,6 +41,7 @@ For each weakness identified above, provide:
 
   const [summary, setSummary] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [hasGenerated, setHasGenerated] = useState(false);
 
   const generateSummary = async () => {
     setIsLoading(true);
@@ -59,6 +60,7 @@ For each weakness identified above, provide:
       
       if (data.response) {
         setSummary(data.response);
+        setHasGenerated(true);
       } else {
         setSummary('Failed to get response from AI, please try again.');
       }
@@ -71,20 +73,45 @@ For each weakness identified above, provide:
     }
   }
 
+  // Auto-generate summary when modal opens
+  useEffect(() => {
+    if (!hasGenerated && !isLoading) {
+      generateSummary();
+    }
+  }, []);
+
   return (
     <>
       <dialog id="ai-feedback-modal" className="modal modal-open">
-        <div className="modal-box">
+        <div className="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={props.close}>✕</button>
           </form>
           <h3 className="font-bold text-lg">Feedback Summary</h3>
-          <div className="flex flex-row justify-center mt-8 mb-4">
-            <button className="btn btn-secondary btn-sm" onClick={generateSummary} disabled={isLoading}>
-              {isLoading ? 'Generating...' : 'Generate Summary'}
-            </button>
-          </div>
-          {summary && <ReactMarkdown className="pt-4 prose">{summary}</ReactMarkdown>}
+          
+          {!summary && isLoading && (
+            <div className="flex flex-col items-center justify-center mt-8 mb-4">
+              <span className="loading loading-spinner loading-lg"></span>
+              <p className="mt-4 text-sm text-gray-600">Generating your personalized feedback summary...</p>
+            </div>
+          )}
+          
+          {summary && (
+            <>
+              <div className="flex flex-row justify-center mt-4 mb-4">
+                <button 
+                  className="btn btn-secondary btn-sm" 
+                  onClick={generateSummary} 
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Generating...' : hasGenerated ? 'Re-generate Summary' : 'Generate Summary'}
+                </button>
+              </div>
+              <div className="prose max-w-none">
+                <ReactMarkdown>{summary}</ReactMarkdown>
+              </div>
+            </>
+          )}
         </div>
       </dialog>
     </>
